@@ -15,8 +15,6 @@
         android:layout_marginTop="70dp"
         android:layout_marginEnd="16dp"
         android:text="Category"
-
-
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="36sp"
@@ -40,7 +38,7 @@
         android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_MarginTop="100dp"
+
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
