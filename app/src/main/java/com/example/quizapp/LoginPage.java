@@ -175,13 +175,29 @@ public class LoginPage extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+//                                new user created in database
                                 DataBase.createUser(user.getEmail().toString(), user.getDisplayName().toString(), new MyCompleteListener() {
                                     @Override
                                     public void onSuccess() {
-                                        progressDialog.dismiss();
-                                        Intent i = new Intent(LoginPage.this, MainActivity.class);
-                                        startActivity(i);
-                                        finish();
+
+                                        DataBase.loadUserDate(new MyCompleteListener() {
+                                            @Override
+                                            public void onSuccess() {
+
+                                                progressDialog.dismiss();
+                                                Intent i = new Intent(LoginPage.this, MainActivity.class);
+                                                startActivity(i);
+                                                finish();
+                                            }
+
+                                            @Override
+                                            public void onFailure() {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(LoginPage.this, "error fetch data", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        });
+
 
                                     }
 
@@ -190,6 +206,26 @@ public class LoginPage extends AppCompatActivity {
 
                                         progressDialog.dismiss();
                                         Toast.makeText(LoginPage.this, "user already exist", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }
+                            // not a new user
+                            else {
+                                DataBase.loadTestData(new MyCompleteListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Intent i = new Intent(LoginPage.this, MainActivity.class);
+                                        startActivity(i);
+                                        finish();
+
+                                    }
+
+                                    @Override
+                                    public void onFailure() {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(LoginPage.this, "error fetch data", Toast.LENGTH_SHORT).show();
+
                                     }
                                 });
                             }
@@ -201,77 +237,15 @@ public class LoginPage extends AppCompatActivity {
                             Toast.makeText(LoginPage.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
+
                     }
+
+
                 });
     }
 
+
     // [END auth_with_google]
-
-//    protected void signInGoogle() {
-//
-//        // Configure Google Sign In
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
-//       mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
-//
-//       signIn();
-//
-//    }
-
-
-//    private void registerActivityForGoogleSignIn() {
-//
-//        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-//            @Override
-//            public void onActivityResult(ActivityResult result) {
-//                int resultCode = result.getResultCode();
-//                Intent data = result.getData();
-//
-//                if(resultCode ==RESULT_OK && data!=null){
-//                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//                    firebaseSignInWithGoogle(task);
-//                }
-//            }
-//        });
-//    }
-//
-//    private void firebaseSignInWithGoogle(Task<GoogleSignInAccount> task) {
-//
-//        try {
-//            GoogleSignInAccount account  = task.getResult(ApiException.class);
-//            Toast.makeText(LoginPage.this,"Google Signing in Successful",Toast.LENGTH_SHORT).show();
-//            Intent i  = new Intent(LoginPage.this, MainActivity.class);
-//            startActivity(i);
-//            finish();
-//            firebaseGoogleAccount(account);
-//        } catch (ApiException e) {
-//            Toast.makeText(LoginPage.this,e.toString(),Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
-//
-//    private void firebaseGoogleAccount(GoogleSignInAccount account) {
-//        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                         Log.d(TAG, "signInWithCredential:success");
-////                            FirebaseUser user = mAuth.getCurrentUser();
-//
-//
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                       Log.w(TAG, "signInWithCredential:failure", task.getException());
-//
-//                        }
-//                    }
-//                });
-//    }
 
 
     protected void signInWithFirebase(String userEmail, String userPassword) {
@@ -283,12 +257,24 @@ public class LoginPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent i = new Intent(LoginPage.this, MainActivity.class);
-                            startActivity(i);
-                            finish();
-                            signIn.setClickable(false);
-                            progressDialog.dismiss();
                             Toast.makeText(LoginPage.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
+
+                            DataBase.loadUserDate(new MyCompleteListener() {
+                                @Override
+                                public void onSuccess() {
+                                    progressDialog.dismiss();
+                                    Intent i = new Intent(LoginPage.this, MainActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onFailure() {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(LoginPage.this, "error fetch data", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                         } else {
                             Toast.makeText(LoginPage.this, "Error Signing in, please try again", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();

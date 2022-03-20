@@ -13,10 +13,10 @@ import java.util.List;
 
 public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
-    private List<TestModel> testModelList;
+    private List<TestModel> testList;
 
     public TestAdapter(List<TestModel> testModelList) {
-        this.testModelList = testModelList;
+        this.testList = testModelList;
     }
 
     @NonNull
@@ -29,14 +29,14 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TestAdapter.ViewHolder holder, int position) {
-        int progress = testModelList.get(position).getTopScore();
+        int progress = testList.get(position).getTopScore();
 
         holder.setData(position,progress);
     }
 
     @Override
     public int getItemCount() {
-        return testModelList.size();
+        return testList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="?android:attr/selectableItemBackground"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
@@ -15,7 +14,7 @@
         android:elevation="5dp"
         android:gravity="center"
         android:padding="16dp"
-        android:background="@color/white">
+        android:background="#E3D9EC">
 
 
         <TextView
@@ -33,11 +32,12 @@
         <ProgressBar
             android:id="@+id/progressBarTest"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
+            android:layout_width="262dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="80dp"
+            android:background="#FFFFFF"
             android:progressTint="@color/design_default_color_primary"
             tools:layout_editor_absoluteX="189dp"
             tools:layout_editor_absoluteY="197dp" />
@@ -46,9 +46,11 @@
             android:id="@+id/textViewScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:layout_margin="8dp"
             android:text="80"
             android:textAlignment="center"
-            android:textColor="@color/design_default_color_primary"
+            android:textColor="@color/black"
             tools:layout_editor_absoluteX="172dp"
             tools:layout_editor_absoluteY="134dp" />
     </LinearLayout>

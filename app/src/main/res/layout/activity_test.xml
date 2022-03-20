@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0E8F8"
     android:theme="@style/Theme.QuizApp.AppBarOverlay"
     tools:context=".Test">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_test"
         style="@style/ThemeOverlay.AppCompat.Dark"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -31,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_test"
        />
 
 

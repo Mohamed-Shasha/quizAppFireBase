@@ -101,10 +101,23 @@ public class SignUpPage extends AppCompatActivity {
                             DataBase.createUser(userEmail, userName, new MyCompleteListener() {
                                 @Override
                                 public void onSuccess() {
-                                    progressDialog.dismiss();
-                                    Intent i = new Intent(SignUpPage.this, MainActivity.class);
-                                    startActivity(i);
-                                    finish();
+                                    DataBase.loadUserDate(new MyCompleteListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            progressDialog.dismiss();
+                                            Intent i = new Intent(SignUpPage.this, MainActivity.class);
+                                            startActivity(i);
+                                            finish();
+                                        }
+
+                                        @Override
+                                        public void onFailure() {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(SignUpPage.this, "Error Fetching Data", Toast.LENGTH_LONG).show();
+
+                                        }
+                                    });
+
                                 }
 
                                 @Override

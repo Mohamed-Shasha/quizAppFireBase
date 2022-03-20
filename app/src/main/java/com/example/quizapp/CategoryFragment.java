@@ -35,7 +35,7 @@ public class CategoryFragment extends Fragment {
         categoryView = view.findViewById(R.id.cat_grid);
 
 //        loadCategories();
-        CategoryAdapter adapter = new CategoryAdapter(DataBase.categoryModelList);
+        CategoryAdapter adapter = new CategoryAdapter(DataBase.g_cat_List);
         categoryView.setAdapter(adapter);
         return view;
     }

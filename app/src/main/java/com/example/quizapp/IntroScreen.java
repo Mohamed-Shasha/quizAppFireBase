@@ -7,6 +7,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,16 +30,27 @@ public class IntroScreen extends AppCompatActivity {
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splash_anim);
         title.startAnimation(animation);
         mAuth = FirebaseAuth.getInstance();
-        // Access a Cloud Firestore instance from your Activity
 
+        // Access a Cloud Firestore instance from your Activity
         DataBase.db = FirebaseFirestore.getInstance();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (mAuth.getCurrentUser() != null) {
-                    Intent i = new Intent(IntroScreen.this, MainActivity.class);
-                    startActivity(i);
-                    IntroScreen.this.finish();
+                    DataBase.loadUserDate(new MyCompleteListener() {
+                        @Override
+                        public void onSuccess() {
+                            Intent i = new Intent(IntroScreen.this, MainActivity.class);
+                            startActivity(i);
+                            IntroScreen.this.finish();
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(IntroScreen.this,"Error fetching data",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 } else {
                     Intent i = new Intent(IntroScreen.this, LoginPage.class);
                     startActivity(i);

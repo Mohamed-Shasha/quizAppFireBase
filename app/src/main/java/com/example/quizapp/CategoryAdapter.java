@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CategoryAdapter extends BaseAdapter {
 
-    public  List<CategoryModel> cat_List;
+    public List<CategoryModel> cat_List;
 
     public CategoryAdapter(List<CategoryModel> cat_List) {
         this.cat_List = cat_List;
@@ -47,8 +47,9 @@ public class CategoryAdapter extends BaseAdapter {
         myView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent  = new Intent(view.getContext(),Test.class);
-                intent.putExtra("CAT_INDEX",i);
+                DataBase.cat_index = i ;
+                Intent intent = new Intent(view.getContext(), Test.class);
+//                intent.putExtra("CAT_INDEX", i);
                 view.getContext().startActivities(new Intent[]{intent});
             }
         });
