@@ -1,5 +1,6 @@
 package com.example.quizapp;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,14 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             testNumber = itemView.findViewById(R.id.textViewTestNumber);
             topScore = itemView.findViewById(R.id.textViewScore);
             progressBar = itemView.findViewById(R.id.progressBarTest);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(itemView.getContext(),Questions.class);
+                    itemView.getContext().startActivity(i);
+
+                }
+            });
         }
 
         public void setData(int pos, int progress) {

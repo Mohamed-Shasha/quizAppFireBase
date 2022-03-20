@@ -39,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.nav_homeSpace:
-                    setFragment(new CategoryFragment());
-                    return true;
-                case R.id.nav_board:
-                    setFragment(new StatsFragment());
+                case R.id.nav_home:
+                  setFragment(new CategoryFragment());
                     return true;
                 case R.id.nav_account:
                     setFragment(new AccountFragment());
+                    return true;
+                case R.id.nav_stats:
+                   setFragment(new StatsFragment());
                     return true;
             }
             return false;

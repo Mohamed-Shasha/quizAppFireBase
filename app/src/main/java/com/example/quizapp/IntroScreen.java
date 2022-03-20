@@ -37,7 +37,7 @@ public class IntroScreen extends AppCompatActivity {
             @Override
             public void run() {
                 if (mAuth.getCurrentUser() != null) {
-                    DataBase.loadUserDate(new MyCompleteListener() {
+                    DataBase.loadUserDate( new MyCompleteListener() {
                         @Override
                         public void onSuccess() {
                             Intent i = new Intent(IntroScreen.this, MainActivity.class);
