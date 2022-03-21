@@ -8,7 +8,7 @@
     tools:context=".StartTest">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/st_category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -19,7 +19,7 @@
         android:textColor="@color/black"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintBottom_toTopOf="@+id/st_test_number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         app:layout_constraintVertical_bias="0.158" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/st_test_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -89,6 +89,7 @@ android:backgroundTint="#7991EA"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/st_total_questions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5"
@@ -134,6 +135,7 @@ android:backgroundTint="#7991EA"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/st_best_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5"
@@ -178,6 +180,7 @@ android:backgroundTint="#7991EA"
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/st_time"
                     android:text="5"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -206,6 +209,7 @@ android:backgroundTint="#7991EA"
         />
 
     <ImageView
+        android:id="@+id/st_back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_back"

@@ -1,6 +1,7 @@
 package com.example.quizapp;
 
 import android.util.ArrayMap;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -24,10 +25,12 @@ public class DataBase {
     // Access a Cloud Firestore instance from your Activity
     public static List<CategoryModel> g_cat_List = new ArrayList<>();
     public static int cat_index = 0;
-
+    public static int selectedTestIndex = 0;
     public static List<TestModel> g_test_List = new ArrayList<>();
 
+    public static List<QuestionModel> g_question_list = new ArrayList<>();
     public static ProfileModel profile = new ProfileModel("n", null);
+
     public static FirebaseFirestore db;
 
     static void createUser(String email, String name, MyCompleteListener completeListener) {
@@ -86,6 +89,22 @@ public class DataBase {
                 });
     }
 
+    public static void loadUserDate(MyCompleteListener myCompleteListener) {
+        loadCategories(new MyCompleteListener() {
+            @Override
+            public void onSuccess() {
+                getProfile(myCompleteListener);
+
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
+
+    }
+
 
     public static void loadCategories(MyCompleteListener completeListener) {
         g_cat_List.clear();
@@ -111,6 +130,7 @@ public class DataBase {
                         }
                         completeListener.onSuccess();
                     }
+
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -138,9 +158,9 @@ public class DataBase {
 
                         for (int i = 1; i <= Num_Of_Test; i++) {
 
-                            String test_ID = documentSnapshot.getString("TEST" + String.valueOf(i));
+                            String test_ID = documentSnapshot.getString("TEST" + String.valueOf(i)+"_ID");
                             int test_time = documentSnapshot.getLong("TEST" + String.valueOf(i) + "_TIME").intValue();
-                            g_test_List.add(new TestModel(test_ID, 20, test_time));
+                            g_test_List.add(new TestModel(test_ID, 0, test_time));
 
 
                         }
@@ -156,26 +176,45 @@ public class DataBase {
                 });
     }
 
-    public static void loadUserDate(MyCompleteListener myCompleteListener){
-        loadCategories(new MyCompleteListener() {
-            @Override
-            public void onSuccess() {
-                getProfile(myCompleteListener);
+    public static void loadQuestions(MyCompleteListener myCompleteListener) {
+        g_question_list.clear();
+        db.collection("Questions")
+               .whereEqualTo("CATEGORY", g_cat_List.get(cat_index).getDocumentID())
+              .whereEqualTo("TEST", g_test_List.get(selectedTestIndex).getTestID())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                     @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
-            }
-            @Override
-            public void onFailure() {
+                            String question = documentSnapshot.getString("QUESTION");
+                            String a = documentSnapshot.getString("A");
+                            String b = documentSnapshot.getString("B");
+                            String c = documentSnapshot.getString("C");
+                            String d = documentSnapshot.getString("D");
+                            int answer = documentSnapshot.getLong("ANSWER").intValue();
+                            g_question_list.add(new QuestionModel(question,a,b,c,d,answer));
 
-            }
-        });
+
+                        }
+                        Log.d("test", String.valueOf(g_question_list.size()));
+                        Log.d("question", String.valueOf(g_question_list));
+                        Log.d("test", String.valueOf(g_test_List).toString());
+                        Log.d("selectedTestIndex", String.valueOf(selectedTestIndex));
+                        Log.d("cat_index", String.valueOf(cat_index));
+
+                        myCompleteListener.onSuccess();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        myCompleteListener.onFailure();
+                    }
+                });
 
     }
-
-
-
-
-
-
 
 
 }
