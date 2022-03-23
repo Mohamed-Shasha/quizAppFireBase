@@ -1,5 +1,7 @@
 package com.example.quizapp;
 
+import static com.example.quizapp.DataBase.*;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,21 +123,25 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 //            no option selected yet!
             if (prevSelected == null) {
                 option.setBackgroundResource(R.drawable.selected_button);
-                DataBase.g_question_list.get(pos).getSelectedAnswer();
+                g_question_list.get(pos).setSelectedAnswer(i);
+                changedStatus(pos,ANSWERED);
                 prevSelected = option;
+                
 //                option selected
             } else {
 
 //                same option selected then unselect it
                 if (prevSelected.getId() == option.getId()) {
                     option.setBackgroundResource(R.drawable.unselected_button);
-                    DataBase.g_question_list.get(pos).setSelectedAnswer(-1);
+                    g_question_list.get(pos).setSelectedAnswer(-1);
+                    changedStatus(pos,UNANSWERED);
                     prevSelected = null;
 //                 change selected to this option from option selected previously
                 } else {
                     prevSelected.setBackgroundResource(R.drawable.unselected_button);
                     option.setBackgroundResource(R.drawable.selected_button);
-                    DataBase.g_question_list.get(pos).setSelectedAnswer(i);
+                    g_question_list.get(pos).setSelectedAnswer(i);
+                    changedStatus(pos,ANSWERED);
                     prevSelected = option;
                 }
 
@@ -143,7 +149,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
         }
         private void setOption(Button option, int i, int pos) {
-           if(DataBase.g_question_list.get(pos).getSelectedAnswer()==i){
+           if(g_question_list.get(pos).getSelectedAnswer()==i){
 
                option.setBackgroundResource(R.drawable.selected_button);
            }
@@ -153,6 +159,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         }
 
 
+    }
+
+    private void changedStatus(int id, int status) {
+
+        if(g_question_list.get(id).getStatus()!=REVIEW){
+
+            g_question_list.get(id).setStatus(status);
+        }
     }
 
 

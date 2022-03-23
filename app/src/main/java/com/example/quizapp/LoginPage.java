@@ -224,7 +224,7 @@ public class LoginPage extends AppCompatActivity {
                                     @Override
                                     public void onFailure() {
                                         progressDialog.dismiss();
-                                        Toast.makeText(LoginPage.this, "error fetch data", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginPage.this, "error fetching data", Toast.LENGTH_SHORT).show();
 
                                     }
                                 });

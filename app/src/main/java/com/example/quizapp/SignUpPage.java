@@ -73,7 +73,7 @@ public class SignUpPage extends AppCompatActivity {
             email.setError("Enter your E-mail please");
             return false;
         }
-        if (email.length() < 7) {
+        if (email.length() < 4) {
             email.setError("Enter a Vaild E-mail");
             return false;
         }
@@ -123,7 +123,7 @@ public class SignUpPage extends AppCompatActivity {
                                 @Override
                                 public void onFailure() {
                                     progressDialog.dismiss();
-                                    Toast.makeText(SignUpPage.this, "try again later", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignUpPage.this, "Error, try again later", Toast.LENGTH_LONG).show();
 
                                 }
                             });

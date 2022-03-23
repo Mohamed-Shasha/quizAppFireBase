@@ -3,11 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_account.xml" value="0.1" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_back.xml" value="0.119" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_board.xml" value="0.1535" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_bookmark.xml" value="0.1535" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_category.xml" value="0.1535" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_clear.xml" value="0.134" />
+        <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_email.xml" value="0.1" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_flag.xml" value="0.134" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_left.xml" value="0.1" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable-anydpi/ic_password.xml" value="0.1535" />
@@ -49,6 +51,8 @@
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/fragment_stats.xml" value="0.1879432624113475" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/nav_header_main.xml" value="0.2" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/question_item.xml" value="0.25" />
+        <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/questions_drawer.xml" value="0.22" />
+        <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/qustion_grid_view_item.xml" value="0.67" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/test_item_layout.xml" value="0.33" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.38051282051282054" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/menu/bottom_menu.xml" value="0.19635416666666666" />

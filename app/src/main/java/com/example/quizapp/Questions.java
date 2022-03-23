@@ -3,6 +3,8 @@ package com.example.quizapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,8 +13,10 @@ import androidx.recyclerview.widget.SnapHelper;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,11 +33,15 @@ public class Questions extends AppCompatActivity {
     private QuestionAdapter questionAdapter;
     private int questionID_Number;
 
+    private DrawerLayout drawer;
+
+    private GridView questionsGridView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_questions);
+        setContentView(R.layout.questions_drawer);
 
 //        initialize variables
         questionView = findViewById(R.id.question_view);
@@ -46,6 +54,7 @@ public class Questions extends AppCompatActivity {
         next_question = findViewById(R.id.question_imageButton_next);
         flag = findViewById(R.id.question_imageButton_flag);
         clear = findViewById(R.id.question_imageButton_clear);
+        drawer = findViewById(R.id.drawer_question);
         questionID_Number = 0;
 
         question_ID.setText("1/" + String.valueOf(DataBase.g_question_list.size()));
@@ -81,6 +90,10 @@ public class Questions extends AppCompatActivity {
 //                get position of question view
                 questionID_Number = recyclerView.getLayoutManager().getPosition(view);
                 question_ID.setText(String.valueOf(questionID_Number + 1) + "/" + DataBase.g_question_list.size());
+
+                if(DataBase.g_question_list.get(questionID_Number).getStatus()==DataBase.NOT_VISITED){
+                    DataBase.g_question_list.get(questionID_Number).setStatus(DataBase.UNANSWERED);
+                }
             }
 
             @Override
@@ -125,6 +138,14 @@ public class Questions extends AppCompatActivity {
             }
         });
 
+        question_List.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!drawer.isDrawerOpen(GravityCompat.END)){
+                    drawer.openDrawer(GravityCompat.END);
+                }
+            }
+        });
     }
 
 

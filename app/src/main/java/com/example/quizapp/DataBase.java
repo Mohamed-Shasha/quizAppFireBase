@@ -29,6 +29,12 @@ public class DataBase {
     public static List<TestModel> g_test_List = new ArrayList<>();
 
     public static List<QuestionModel> g_question_list = new ArrayList<>();
+
+    public static final int NOT_VISITED = 0;
+    public static final int UNANSWERED = 1;
+    public static final int ANSWERED = 2;
+    public static final int REVIEW = 3;
+
     public static ProfileModel profile = new ProfileModel("n", null);
 
     public static FirebaseFirestore db;
@@ -99,7 +105,7 @@ public class DataBase {
 
             @Override
             public void onFailure() {
-
+                myCompleteListener.onFailure();
             }
         });
 
@@ -194,7 +200,8 @@ public class DataBase {
                             String d = documentSnapshot.getString("D");
                             int answer = documentSnapshot.getLong("ANSWER").intValue();
 
-                            g_question_list.add(new QuestionModel(question, a, b, c, d, answer,-1));
+
+                            g_question_list.add(new QuestionModel(question, a, b, c, d, answer,-1,NOT_VISITED));
 
 
                         }

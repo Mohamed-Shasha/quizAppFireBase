@@ -54,7 +54,7 @@ public class ForgotPassword extends AppCompatActivity {
                     finish();
 
                 } else {
-                    Toast.makeText(ForgotPassword.this, "Error we are Sorry, please try again later!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgotPassword.this, "Error please try again later!", Toast.LENGTH_SHORT).show();
                     resetPassword.setClickable(true);
                 }
 
