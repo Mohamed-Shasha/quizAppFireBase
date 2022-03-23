@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+   >
+
+    <TextView
+        android:id="@+id/question_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:elevation="5dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:padding="8dp"
+        android:scrollbars="vertical"
+        android:scrollHorizontally="false"
+        android:singleLine="false"
+        android:text="Question number 1"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:translationZ="3dp"
+        tools:ignore="RtlCompat" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/question_item_optionA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/unselected_button"
+        android:text="option A"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/question_item_optionB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:backgroundTint="@null"
+        android:background="@drawable/unselected_button"
+        android:text="option A"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/question_item_optionC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/unselected_button"
+        android:text="option A"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/question_item_optionD"
+        android:layout_width="match_parent"
+        android:backgroundTint="@null"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/unselected_button"
+        android:text="option A"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+
+</LinearLayout>

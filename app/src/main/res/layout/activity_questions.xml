@@ -11,7 +11,7 @@
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#170C43"
+        android:background="#06064E"
         android:elevation="5dp"
         android:orientation="horizontal"
         android:padding="16dp"
@@ -20,15 +20,17 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/textView_question_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="1/20"
-            android:textColor="@color/white"
+            android:textColor="@color/teal_200"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/textView_question_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -37,24 +39,28 @@
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/question_button_submit"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:textColor="@color/black"
             android:layout_weight="1"
-            android:backgroundTint="#FF5722"
+            android:backgroundTint="@color/teal_200"
             android:text="submit" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#170C43"
+        android:background="@color/purple_700"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_bar">
 
         <TextView
+            android:id="@+id/questionActivity_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -63,15 +69,17 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/imageView_bookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
             android:layout_marginLeft="30dp"
+            android:layout_weight="1"
 
-            android:src="@drawable/ic_flag" />
+            android:src="@drawable/ic_bookmark" />
 
         <ImageView
+            android:id="@+id/imageView_questionList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -80,40 +88,71 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/purple_700"
         android:orientation="horizontal"
-        android:padding="10dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="#170C43"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FF5722"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="50dp"
+            android:id="@+id/imageButton_previous"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="50dp"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/secondary_text_dark"
             app:srcCompat="@drawable/ic_left"
 
             />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-           android:backgroundTint="#FF5722"
-            android:text="Clear selection"/>
 
         <ImageButton
-            android:backgroundTint="#FF5722"
-            android:layout_width="wrap_content"
+            android:id="@+id/question_imageButton_flag"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:background="@drawable/ic_flag"
+            android:backgroundTint="@color/white"
+            android:text="Flag" />
+
+        <ImageButton
+            android:id="@+id/question_imageButton_clear"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.7"
+            android:background="@drawable/ic_clear"
+            android:backgroundTint="@color/white" />
+
+        <ImageButton
+            android:layout_weight="1"
+            android:id="@+id/question_imageButton_next"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@android:color/secondary_text_dark"
             app:srcCompat="@drawable/ic_right" />
 
 
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/question_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

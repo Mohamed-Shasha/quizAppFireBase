@@ -158,7 +158,7 @@ public class DataBase {
 
                         for (int i = 1; i <= Num_Of_Test; i++) {
 
-                            String test_ID = documentSnapshot.getString("TEST" + String.valueOf(i)+"_ID");
+                            String test_ID = documentSnapshot.getString("TEST" + String.valueOf(i) + "_ID");
                             int test_time = documentSnapshot.getLong("TEST" + String.valueOf(i) + "_TIME").intValue();
                             g_test_List.add(new TestModel(test_ID, 0, test_time));
 
@@ -179,11 +179,11 @@ public class DataBase {
     public static void loadQuestions(MyCompleteListener myCompleteListener) {
         g_question_list.clear();
         db.collection("Questions")
-               .whereEqualTo("CATEGORY", g_cat_List.get(cat_index).getDocumentID())
-              .whereEqualTo("TEST", g_test_List.get(selectedTestIndex).getTestID())
+                .whereEqualTo("CATEGORY", g_cat_List.get(cat_index).getDocumentID())
+                .whereEqualTo("TEST", g_test_List.get(selectedTestIndex).getTestID())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                     @Override
+                    @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
@@ -193,7 +193,8 @@ public class DataBase {
                             String c = documentSnapshot.getString("C");
                             String d = documentSnapshot.getString("D");
                             int answer = documentSnapshot.getLong("ANSWER").intValue();
-                            g_question_list.add(new QuestionModel(question,a,b,c,d,answer));
+
+                            g_question_list.add(new QuestionModel(question, a, b, c, d, answer,-1));
 
 
                         }
