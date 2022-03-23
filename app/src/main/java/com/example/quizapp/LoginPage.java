@@ -148,7 +148,7 @@ public class LoginPage extends AppCompatActivity {
 
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 //                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
+            firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
 
                 // Google Sign In failed, update UI appropriately
@@ -176,6 +176,7 @@ public class LoginPage extends AppCompatActivity {
 
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
 //                                new user created in database
+                                assert user != null;
                                 DataBase.createUser(user.getEmail().toString(), user.getDisplayName().toString(), new MyCompleteListener() {
                                     @Override
                                     public void onSuccess() {
@@ -212,22 +213,35 @@ public class LoginPage extends AppCompatActivity {
                             }
                             // not a new user
                             else {
-                                DataBase.loadTestData(new MyCompleteListener() {
+
+                                DataBase.loadUserDate(new MyCompleteListener() {
                                     @Override
                                     public void onSuccess() {
-                                        Intent i = new Intent(LoginPage.this, MainActivity.class);
-                                        startActivity(i);
-                                        finish();
+                                        DataBase.loadTestData(new MyCompleteListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Intent i = new Intent(LoginPage.this, MainActivity.class);
+                                                startActivity(i);
+                                                finish();
 
+                                            }
+
+                                            @Override
+                                            public void onFailure() {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(LoginPage.this, "error fetching data", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        });
                                     }
 
                                     @Override
                                     public void onFailure() {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(LoginPage.this, "error fetching data", Toast.LENGTH_SHORT).show();
 
+                                        Toast.makeText(LoginPage.this, "error fetch data", Toast.LENGTH_SHORT).show();
                                     }
                                 });
+
                             }
 
 

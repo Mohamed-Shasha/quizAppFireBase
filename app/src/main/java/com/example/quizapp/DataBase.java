@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DataBase {
     // Access a Cloud Firestore instance from your Activity
@@ -76,7 +77,7 @@ public class DataBase {
 
     public static void getProfile(MyCompleteListener myCompleteListener) {
 //        get user by  firebase user ID
-        db.collection("USERS").document(FirebaseAuth.getInstance().getUid()).get()
+        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -151,7 +152,7 @@ public class DataBase {
 
 
     public static void loadTestData(MyCompleteListener myCompleteListener) {
-        g_test_List.clear();
+      g_test_List.clear();
 //        get document quiz from user selected index
         db.collection("QUIZ").document(g_cat_List.get(cat_index).getDocumentID())
                 .collection("TEST_LIST").document("TEST_INFO").get()
@@ -170,13 +171,15 @@ public class DataBase {
 
 
                         }
-                        myCompleteListener.onSuccess();
 
+                        myCompleteListener.onSuccess();
                     }
+
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+
                         myCompleteListener.onFailure();
                     }
                 });
