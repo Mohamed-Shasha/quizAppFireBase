@@ -55,7 +55,7 @@ public class SignUpPage extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signup.setClickable(false);
+                //signup.setClickable(false);
                 String userEmail = email.getText().toString().trim();
                 String userPassword = password.getText().toString().trim();
 
