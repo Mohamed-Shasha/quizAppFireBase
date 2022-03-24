@@ -147,8 +147,8 @@ public class LoginPage extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
 
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-               Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-            firebaseAuthWithGoogle(account.getIdToken());
+                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+                firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
 
                 // Google Sign In failed, update UI appropriately
@@ -170,10 +170,8 @@ public class LoginPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             Toast.makeText(LoginPage.this, "Google Signing in Successful", Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
 //                                new user created in database
                                 assert user != null;
@@ -220,6 +218,7 @@ public class LoginPage extends AppCompatActivity {
                                         DataBase.loadTestData(new MyCompleteListener() {
                                             @Override
                                             public void onSuccess() {
+                                                progressDialog.dismiss();
                                                 Intent i = new Intent(LoginPage.this, MainActivity.class);
                                                 startActivity(i);
                                                 finish();

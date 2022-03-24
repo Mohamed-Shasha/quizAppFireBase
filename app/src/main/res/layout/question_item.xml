@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-   >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/question_item"
@@ -32,6 +31,7 @@
         android:id="@+id/question_item_optionA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="8dp"
         android:background="@drawable/unselected_button"
         android:text="option A"
@@ -39,12 +39,14 @@
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatButton
+
         android:id="@+id/question_item_optionB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:backgroundTint="@null"
+        android:layout_gravity="center"
         android:background="@drawable/unselected_button"
+        android:backgroundTint="@null"
         android:text="option A"
         android:textColor="@color/white"
         android:textSize="14sp" />
@@ -54,6 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:layout_gravity="center"
         android:background="@drawable/unselected_button"
         android:text="option A"
         android:textColor="@color/white"
@@ -62,10 +65,11 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/question_item_optionD"
         android:layout_width="match_parent"
-        android:backgroundTint="@null"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:layout_gravity="center"
         android:background="@drawable/unselected_button"
+        android:backgroundTint="@null"
         android:text="option A"
         android:textColor="@color/white"
         android:textSize="14sp" />
