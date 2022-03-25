@@ -126,8 +126,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
                 g_question_list.get(pos).setSelectedAnswer(i);
                 changedStatus(pos,ANSWERED);
                 prevSelected = option;
-                
-//                option selected
+
+//                option already selected
             } else {
 
 //                same option selected then unselect it

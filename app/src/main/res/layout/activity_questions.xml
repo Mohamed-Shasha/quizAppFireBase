@@ -101,10 +101,10 @@
         <ImageButton
             android:id="@+id/imageButton_previous"
             android:layout_width="wrap_content"
-            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="50dp"
+            android:layout_weight="1"
             android:backgroundTint="@color/teal_200"
             app:srcCompat="@drawable/ic_left"
 
@@ -133,8 +133,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_weight="1"
             android:layout_marginEnd="8dp"
+            android:layout_weight="1"
 
             android:backgroundTint="@color/teal_200"
             app:srcCompat="@drawable/ic_right" />
@@ -156,4 +156,17 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <ImageView
+        android:id="@+id/mark"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:elevation="5dp"
+        android:src="@drawable/ic_flag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+        app:tint="#DA0303"
+        android:visibility="gone"
+        tools:ignore="InvalidId" />
 </androidx.constraintlayout.widget.ConstraintLayout>
