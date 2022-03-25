@@ -1,8 +1,18 @@
 package com.example.quizapp;
 
+import static com.example.quizapp.DataBase.ANSWERED;
+import static com.example.quizapp.DataBase.NOT_VISITED;
+import static com.example.quizapp.DataBase.REVIEW;
+import static com.example.quizapp.DataBase.UNANSWERED;
+import static com.example.quizapp.DataBase.g_question_list;
+import static com.example.quizapp.DataBase.g_test_List;
+import static com.example.quizapp.DataBase.selectedTestIndex;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,9 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -22,6 +36,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
+
+import io.grpc.Context;
 
 public class Questions extends AppCompatActivity {
 
@@ -38,11 +54,13 @@ public class Questions extends AppCompatActivity {
 
     private GridView questionsGridView;
     private QuestionGridViewAdapter gridViewAdapter;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.questions_drawer);
+
 
 //        initialize variables
         questionView = findViewById(R.id.question_view);
@@ -50,76 +68,33 @@ public class Questions extends AppCompatActivity {
         question_ID = findViewById(R.id.textView_question_no);
         question_List = findViewById(R.id.imageView_questionList);
         timer_question = findViewById(R.id.textView_question_timer);
-        submit = findViewById(R.id.question_button_submit);
+        submit = findViewById(R.id.button_submit);
         previous_question = findViewById(R.id.imageButton_previous);
         next_question = findViewById(R.id.question_imageButton_next);
         flag = findViewById(R.id.question_imageButton_flag);
         clear = findViewById(R.id.question_imageButton_clear);
         drawer = findViewById(R.id.drawer_question);
-        questionsGridView  =findViewById(R.id.question_gridView);
+        questionsGridView = findViewById(R.id.question_gridView);
         flag_image = findViewById(R.id.mark);
 
-        DataBase.g_question_list.get(0).setStatus(DataBase.UNANSWERED);
+
+        g_question_list.get(0).setStatus(UNANSWERED);
 
         questionID_Number = 0;
 
-        question_ID.setText("1/" + String.valueOf(DataBase.g_question_list.size()));
+        question_ID.setText("1/" + String.valueOf(g_question_list.size()));
         question_cat_Name.setText(DataBase.g_cat_List.get(DataBase.cat_index).getCategoryName());
 
-        questionAdapter = new QuestionAdapter(DataBase.g_question_list);
+        questionAdapter = new QuestionAdapter(g_question_list);
         questionView.setAdapter(questionAdapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         questionView.setLayoutManager(layoutManager);
 
-        gridViewAdapter = new QuestionGridViewAdapter(this,DataBase.g_question_list.size());
+        gridViewAdapter = new QuestionGridViewAdapter(this, g_question_list.size());
         questionsGridView.setAdapter(gridViewAdapter);
         setSnapHelper();
-
-        setClickListener();
-
-        setTimer();
-    }
-
-
-    private void setSnapHelper() {
-
-
-        SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(questionView);
-
-        questionView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-//                find snap and store it in View
-                View view = snapHelper.findSnapView(recyclerView.getLayoutManager());
-//                get position of question from position of view
-                questionID_Number = recyclerView.getLayoutManager().getPosition(view);
-                question_ID.setText(String.valueOf(questionID_Number + 1) + "/" + DataBase.g_question_list.size());
-
-                if (DataBase.g_question_list.get(questionID_Number).getStatus() == DataBase.NOT_VISITED) {
-                    DataBase.g_question_list.get(questionID_Number).setStatus(DataBase.UNANSWERED);
-                }
-                if(DataBase.g_question_list.get(questionID_Number).getStatus()==DataBase.REVIEW){
-                    flag_image.setVisibility(View.VISIBLE);
-                }
-                else{
-                    flag_image.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
-    }
-
-
-    private void setClickListener() {
 
         previous_question.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +112,7 @@ public class Questions extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                make sure that we are not on last question
-                if (questionID_Number < DataBase.g_question_list.size() - 1) {
+                if (questionID_Number < g_question_list.size() - 1) {
 
                     questionView.smoothScrollToPosition(questionID_Number + 1);
                 }
@@ -147,8 +122,8 @@ public class Questions extends AppCompatActivity {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataBase.g_question_list.get(questionID_Number).setSelectedAnswer(-1);
-                DataBase.g_question_list.get(questionID_Number).setStatus(DataBase.UNANSWERED);
+                g_question_list.get(questionID_Number).setSelectedAnswer(-1);
+                g_question_list.get(questionID_Number).setStatus(DataBase.UNANSWERED);
                 flag_image.setVisibility(View.GONE);
                 questionAdapter.notifyDataSetChanged();
             }
@@ -167,33 +142,108 @@ public class Questions extends AppCompatActivity {
         flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (flag_image.getVisibility()!= View.VISIBLE) {
+                if (flag_image.getVisibility() != View.VISIBLE) {
                     flag_image.setVisibility(View.VISIBLE);
-                    DataBase.g_question_list.get(questionID_Number).setStatus(DataBase.REVIEW);
+                    g_question_list.get(questionID_Number).setStatus(REVIEW);
                 } else {
                     flag_image.setVisibility(View.GONE);
-                    if (DataBase.g_question_list.get(questionID_Number).getSelectedAnswer() != -1) {
-                        DataBase.g_question_list.get(questionID_Number).setStatus(DataBase.ANSWERED);
+                    if (g_question_list.get(questionID_Number).getSelectedAnswer() != -1) {
+                        g_question_list.get(questionID_Number).setStatus(ANSWERED);
                     } else {
-                        DataBase.g_question_list.get(questionID_Number).setStatus(DataBase.UNANSWERED);
+                        g_question_list.get(questionID_Number).setStatus(UNANSWERED);
                     }
 
                 }
             }
         });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+
+            }
+
+            private void showDialog() {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Questions.this);
+                View view = LayoutInflater.from(Questions.this)
+                        .inflate(R.layout.submit_test, findViewById(R.id.layout_dialog_container_submit));
+                builder.setView(view);
+                final AlertDialog dialog = builder.create();
+                view.findViewById(R.id.cancel_submit).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        dialog.dismiss();
+                    }
+                });
+                view.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                        dialog.dismiss();
+                        Intent i = new Intent(Questions.this, Score.class);
+                        startActivity(i);
+                        Questions.this.finish();
+
+                    }
+                });
+                dialog.show();
+            }
+
+
+        });
     }
 
 
-    public void sendToQuestion(int pos){
+    private void setSnapHelper() {
+
+
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(questionView);
+
+        questionView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+//                find snap and store it in View
+                View view = snapHelper.findSnapView(recyclerView.getLayoutManager());
+//                get position of question from position of view
+                questionID_Number = recyclerView.getLayoutManager().getPosition(view);
+                question_ID.setText(String.valueOf(questionID_Number + 1) + "/" + g_question_list.size());
+
+                if (g_question_list.get(questionID_Number).getStatus() == NOT_VISITED) {
+                    g_question_list.get(questionID_Number).setStatus(UNANSWERED);
+                }
+                if (g_question_list.get(questionID_Number).getStatus() == REVIEW) {
+                    flag_image.setVisibility(View.VISIBLE);
+                } else {
+                    flag_image.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+    }
+
+
+    public void sendToQuestion(int pos) {
         questionView.smoothScrollToPosition(pos);
-        if(drawer.isDrawerOpen(GravityCompat.END)){
+        if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
         }
     }
+
     private void setTimer() {
 
-        long testTime = (long) DataBase.g_test_List.get(DataBase.selectedTestIndex).getTime() * 60 * 1000;
-        CountDownTimer countDownTimer = new CountDownTimer(testTime, 1000) {
+        long testTime = (long) g_test_List.get(selectedTestIndex).getTime() * 60 * 1000;
+        countDownTimer = new CountDownTimer(testTime, 1000) {
             @Override
             public void onTick(long remainingTime) {
 
@@ -209,7 +259,9 @@ public class Questions extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
+                Intent i = new Intent(Questions.this, Score.class);
+                startActivity(i);
+                Questions.this.finish();
 
             }
         };

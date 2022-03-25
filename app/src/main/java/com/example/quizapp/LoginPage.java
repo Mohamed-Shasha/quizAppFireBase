@@ -211,7 +211,6 @@ public class LoginPage extends AppCompatActivity {
                             }
                             // not a new user
                             else {
-
                                 DataBase.loadUserDate(new MyCompleteListener() {
                                     @Override
                                     public void onSuccess() {

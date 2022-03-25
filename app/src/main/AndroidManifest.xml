@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizApp">
         <activity
+            android:name=".Score"
+            android:exported="false" />
+        <activity
             android:name=".StartTest"
             android:exported="false" />
         <activity

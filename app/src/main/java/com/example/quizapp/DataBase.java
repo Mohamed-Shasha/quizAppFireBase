@@ -114,7 +114,7 @@ public class DataBase {
 
 
     public static void loadCategories(MyCompleteListener completeListener) {
-        g_cat_List.clear();
+       g_cat_List.clear();
         db.collection("QUIZ").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -124,6 +124,7 @@ public class DataBase {
                             docList.put(doc.getId(), doc);
                         }
                         QueryDocumentSnapshot categoryListDoc = docList.get("Categories");
+
 
                         long catCount = categoryListDoc.getLong("COUNT");
 

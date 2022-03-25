@@ -31,7 +31,7 @@ public class Test extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar_test);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         getSupportActionBar().setTitle(DataBase.g_cat_List.get(DataBase.cat_index).getCategoryName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

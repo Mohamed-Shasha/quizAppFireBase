@@ -39,7 +39,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/question_button_submit"
+            android:id="@+id/button_submit"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"

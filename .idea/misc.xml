@@ -35,6 +35,7 @@
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_login_page.xml" value="0.67" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_questions.xml" value="0.25" />
+        <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_score.xml" value="0.1" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_sgin_up_page.xml" value="0.32653985507246375" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_start_test.xml" value="0.22" />
@@ -53,6 +54,7 @@
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/question_item.xml" value="0.25" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/questions_drawer.xml" value="0.22" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/qustion_grid_view_item.xml" value="0.67" />
+        <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/submit_test.xml" value="0.1" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/test_item_layout.xml" value="0.33" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.38051282051282054" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/menu/bottom_menu.xml" value="0.19635416666666666" />
