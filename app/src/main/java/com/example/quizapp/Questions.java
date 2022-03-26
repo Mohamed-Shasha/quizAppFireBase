@@ -95,7 +95,7 @@ public class Questions extends AppCompatActivity {
         gridViewAdapter = new QuestionGridViewAdapter(this, g_question_list.size());
         questionsGridView.setAdapter(gridViewAdapter);
         setSnapHelper();
-
+        setTimer();
         previous_question.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,38 +163,9 @@ public class Questions extends AppCompatActivity {
                 showDialog();
 
             }
-
-            private void showDialog() {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(Questions.this);
-                View view = LayoutInflater.from(Questions.this)
-                        .inflate(R.layout.submit_test, findViewById(R.id.layout_dialog_container_submit));
-                builder.setView(view);
-                final AlertDialog dialog = builder.create();
-                view.findViewById(R.id.cancel_submit).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        dialog.dismiss();
-                    }
-                });
-                view.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-
-                        dialog.dismiss();
-                        Intent i = new Intent(Questions.this, Score.class);
-                        startActivity(i);
-                        Questions.this.finish();
-
-                    }
-                });
-                dialog.show();
-            }
-
-
         });
+
+
     }
 
 
@@ -230,6 +201,36 @@ public class Questions extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void showDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Questions.this);
+        View view = LayoutInflater.from(Questions.this)
+                .inflate(R.layout.submit_test, findViewById(R.id.layout_dialog_container_submit));
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        view.findViewById(R.id.cancel_submit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                countDownTimer.cancel();
+                dialog.dismiss();
+
+                Intent i = new Intent(Questions.this, Score.class);
+                startActivity(i);
+                Questions.this.finish();
+
+            }
+        });
+        dialog.show();
     }
 
 
