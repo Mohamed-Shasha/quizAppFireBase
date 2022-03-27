@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="32dp"
+    android:background="#EAE0EF"
     android:padding="16dp">
 
 
@@ -14,14 +15,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="100dp"
-        android:text="Exit Test"
+        android:text="Test Submission"
         android:textColor="@color/black"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.267"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,9 +31,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="100dp"
-        android:text="Are you sure to Exit Test"
+        android:text="Are you sure to Submit your answers?"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -42,13 +43,12 @@
         app:layout_constraintTop_toBottomOf="@id/divider" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/cancel_submit"
+        android:id="@+id/confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:background="@drawable/button_border"
-        android:backgroundTint="@color/not_answered"
-        android:text="Cancel"
+        android:backgroundTint="@color/purple_700"
+        android:text="Submit"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.07"
@@ -56,17 +56,16 @@
         app:layout_constraintTop_toBottomOf="@+id/content_submit_dialog" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/confirm"
+        android:id="@+id/cancel_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:background="@drawable/button_border"
-        android:text="yes"
-        android:backgroundTint="#1C36C8"
+        android:text="Go back"
+        android:backgroundTint="#FF0000"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.827"
-        app:layout_constraintStart_toEndOf="@+id/cancel_submit"
+        app:layout_constraintStart_toEndOf="@+id/confirm"
         app:layout_constraintTop_toBottomOf="@+id/content_submit_dialog" />
 
     <View

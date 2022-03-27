@@ -4,11 +4,16 @@
 
     <application
         android:allowBackup="true"
+        android:appCategory="audio"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizApp">
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
         <activity
             android:name=".Score"
             android:exported="false" />
@@ -47,6 +52,10 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.QuizApp.NoActionBar" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

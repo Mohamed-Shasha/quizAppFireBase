@@ -96,6 +96,7 @@ public class Questions extends AppCompatActivity {
         questionsGridView.setAdapter(gridViewAdapter);
         setSnapHelper();
         setTimer();
+
         previous_question.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,7 +165,6 @@ public class Questions extends AppCompatActivity {
 
             }
         });
-
 
     }
 
