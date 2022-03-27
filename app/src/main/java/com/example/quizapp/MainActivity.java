@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         String name = DataBase.profile.getName();
 
         drawerProfileName.setText(name);
-        drawerProfileText.setText(name.toUpperCase().substring(0, 1));
+       drawerProfileText.setText(name.toUpperCase().substring(0, 1));
     }
 //        mAppBarConfiguration = new AppBarConfiguration.Builder(
 //                R.id.nav_home, R.id.nav_account, R.id.nav_board)

@@ -1,4 +1,4 @@
-package com.example.quizapp;
+package com.example.quizapp.Adapter;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.Task;
+import com.example.quizapp.DataBase;
+import com.example.quizapp.Model.CategoryModel;
+import com.example.quizapp.R;
+import com.example.quizapp.Test;
 
-import java.util.Base64;
 import java.util.List;
 
 public class CategoryAdapter extends BaseAdapter {

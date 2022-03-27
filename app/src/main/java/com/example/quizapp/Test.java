@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import com.example.quizapp.Adapter.TestAdapter;
 
 public class Test extends AppCompatActivity {
 
@@ -55,16 +53,29 @@ public class Test extends AppCompatActivity {
         DataBase.loadTestData(new MyCompleteListener() {
             @Override
             public void onSuccess() {
-                adapter = new TestAdapter(DataBase.g_test_List);
-                testView.setAdapter(adapter);
-                progressDialog.dismiss();
+                DataBase.loadScore(new MyCompleteListener() {
+                    @Override
+                    public void onSuccess() {
+                        adapter = new TestAdapter(DataBase.g_test_List);
+                        testView.setAdapter(adapter);
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                        Toast.makeText(Test.this, "error load score data", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                });
+
             }
 
             @Override
             public void onFailure() {
-                progressDialog.dismiss();
-                Toast.makeText(Test.this, "error fetch data", Toast.LENGTH_SHORT).show();
 
+                Toast.makeText(Test.this, "error fetch data", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
 

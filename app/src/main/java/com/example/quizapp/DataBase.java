@@ -5,6 +5,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.quizapp.Adapter.RankModel;
+import com.example.quizapp.Model.CategoryModel;
+import com.example.quizapp.Model.ProfileModel;
+import com.example.quizapp.Model.QuestionModel;
+import com.example.quizapp.Model.TestModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,6 +19,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
@@ -24,6 +30,7 @@ import java.util.Objects;
 
 public class DataBase {
     // Access a Cloud Firestore instance from your Activity
+    public static FirebaseFirestore db;
     public static List<CategoryModel> g_cat_List = new ArrayList<>();
     public static int cat_index = 0;
     public static int selectedTestIndex = 0;
@@ -37,21 +44,21 @@ public class DataBase {
     public static final int REVIEW = 3;
 
     public static ProfileModel profile = new ProfileModel("n", null);
+    public static RankModel performance = new RankModel(0, -1);
 
-    public static FirebaseFirestore db;
 
     static void createUser(String email, String name, MyCompleteListener completeListener) {
         // Create a new user with a first and last name
         Map<String, Object> userData = new HashMap<>();
         userData.put("EMAIL_ID", email);
         userData.put("NAME", name);
-        userData.put("TOTAL_SCORE", 0);
+        userData.put("TOTAL_SCORE", 20);
 
         // multiple writes in single atomic
         WriteBatch batch = db.batch();
 
         //get user id from firebase authentication table
-        DocumentReference userDocReference = db.collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        DocumentReference userDocReference = db.collection("USERS").document((FirebaseAuth.getInstance().getCurrentUser()).getUid());
         batch.set(userDocReference, userData);
 
         DocumentReference countDocReference = db.collection("USERS").document("TOTAL_USERS");
@@ -67,7 +74,7 @@ public class DataBase {
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                     public void onFailure(@NonNull Exception e) {
+                    public void onFailure(@NonNull Exception e) {
 
                         completeListener.onFailure();
                     }
@@ -77,13 +84,15 @@ public class DataBase {
 
     public static void getProfile(MyCompleteListener myCompleteListener) {
 //        get user by  firebase user ID
-        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get()
+        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
 
                         profile.setName(documentSnapshot.getString("NAME"));
                         profile.setEmail(documentSnapshot.getString("EMAIL_ID"));
+//                        performance.setTotalScore(documentSnapshot.getLong("TOTAL_SCORE").intValue());
                         myCompleteListener.onSuccess();
                     }
                 })
@@ -114,7 +123,7 @@ public class DataBase {
 
 
     public static void loadCategories(MyCompleteListener completeListener) {
-       g_cat_List.clear();
+        g_cat_List.clear();
         db.collection("QUIZ").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -153,7 +162,8 @@ public class DataBase {
 
 
     public static void loadTestData(MyCompleteListener myCompleteListener) {
-      g_test_List.clear();
+        g_test_List.clear();
+
 //        get document quiz from user selected index
         db.collection("QUIZ").document(g_cat_List.get(cat_index).getDocumentID())
                 .collection("TEST_LIST").document("TEST_INFO").get()
@@ -205,13 +215,13 @@ public class DataBase {
                             int answer = documentSnapshot.getLong("ANSWER").intValue();
 
 
-                            g_question_list.add(new QuestionModel(question, a, b, c, d, answer,-1,NOT_VISITED));
+                            g_question_list.add(new QuestionModel(question, a, b, c, d, answer, -1, NOT_VISITED));
 
 
                         }
                         Log.d("test", String.valueOf(g_question_list.size()));
                         Log.d("question", String.valueOf(g_question_list));
-                        Log.d("test", String.valueOf(g_test_List).toString());
+                        Log.d("test", String.valueOf(g_test_List));
                         Log.d("selectedTestIndex", String.valueOf(selectedTestIndex));
                         Log.d("cat_index", String.valueOf(cat_index));
 
@@ -226,6 +236,67 @@ public class DataBase {
                     }
                 });
 
+    }
+
+    public static void loadScore(MyCompleteListener myCompleteListener) {
+        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                .collection("USER_DATA").document("MY_SCORE")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        for (int i = 0; i < g_test_List.size(); i++) {
+
+
+                              int  top = documentSnapshot.getLong(g_test_List.get(i).getTestID()).intValue();
+                                g_test_List.get(i).setTopScore(top);
+                                Log.d("top", "onSuccess: "+top);
+
+
+
+                        }
+                        myCompleteListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        myCompleteListener.onFailure();
+                    }
+                });
+    }
+
+    public static void sendResult(int score, MyCompleteListener myCompleteListener) {
+
+        WriteBatch writeBatch = db.batch();
+
+        DocumentReference userDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
+        writeBatch.update(userDocument, "TOTAL_SCORE", score);
+
+        DocumentReference scoreDocument = userDocument.collection("USER_DATA").document("MY_SCORE");
+        Map<String, Object> testData = new ArrayMap<>();
+        testData.put(g_test_List.get(selectedTestIndex).getTestID(), score);
+        writeBatch.set(scoreDocument, testData, SetOptions.merge());
+
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("top", "onSuccess: "+score);
+                        g_test_List.get(selectedTestIndex).setTopScore(score);
+                        performance.setTotalScore(score);
+                        myCompleteListener.onSuccess();
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        myCompleteListener.onFailure();
+                    }
+                });
     }
 
 

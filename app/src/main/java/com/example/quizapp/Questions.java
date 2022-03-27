@@ -9,10 +9,8 @@ import static com.example.quizapp.DataBase.g_test_List;
 import static com.example.quizapp.DataBase.selectedTestIndex;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,12 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -35,9 +30,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.concurrent.TimeUnit;
+import com.example.quizapp.Adapter.QuestionAdapter;
+import com.example.quizapp.Adapter.QuestionGridViewAdapter;
 
-import io.grpc.Context;
+import java.util.concurrent.TimeUnit;
 
 public class Questions extends AppCompatActivity {
 
@@ -49,12 +45,14 @@ public class Questions extends AppCompatActivity {
     private ImageView question_List, flag_image;
     private QuestionAdapter questionAdapter;
     private int questionID_Number;
+    long testTime;
 
     private DrawerLayout drawer;
 
     private GridView questionsGridView;
     private QuestionGridViewAdapter gridViewAdapter;
     private CountDownTimer countDownTimer;
+    public long timeTaken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,6 +223,8 @@ public class Questions extends AppCompatActivity {
                 dialog.dismiss();
 
                 Intent i = new Intent(Questions.this, Score.class);
+                long totalTime = (long) g_test_List.get(selectedTestIndex).getTime() * 60 * 1000;
+                i.putExtra("Time_Taken", testTime - timeTaken);
                 startActivity(i);
                 Questions.this.finish();
 
@@ -247,7 +247,7 @@ public class Questions extends AppCompatActivity {
         countDownTimer = new CountDownTimer(testTime, 1000) {
             @Override
             public void onTick(long remainingTime) {
-
+                timeTaken = remainingTime;
                 @SuppressLint("DefaultLocale") String time = String.format("%02d: %02d minutes",
 //                        minutes
                         TimeUnit.MILLISECONDS.toMinutes(remainingTime),
@@ -256,6 +256,7 @@ public class Questions extends AppCompatActivity {
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(remainingTime))
                 );
                 timer_question.setText(time);
+
             }
 
             @Override

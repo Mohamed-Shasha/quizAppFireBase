@@ -1,4 +1,4 @@
-package com.example.quizapp;
+package com.example.quizapp.Adapter;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 import static com.example.quizapp.DataBase.*;
 
 import androidx.core.content.ContextCompat;
+
+import com.example.quizapp.Questions;
+import com.example.quizapp.R;
 
 public class QuestionGridViewAdapter extends BaseAdapter {
 

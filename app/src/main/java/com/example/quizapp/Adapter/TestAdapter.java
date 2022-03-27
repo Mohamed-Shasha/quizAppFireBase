@@ -1,4 +1,4 @@
-package com.example.quizapp;
+package com.example.quizapp.Adapter;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,6 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.quizapp.DataBase;
+import com.example.quizapp.Model.TestModel;
+import com.example.quizapp.R;
+import com.example.quizapp.StartTest;
 
 import java.util.List;
 
@@ -63,7 +68,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     DataBase.selectedTestIndex = pos;
-                    Intent i = new Intent(itemView.getContext(),StartTest.class);
+                    Intent i = new Intent(itemView.getContext(), StartTest.class);
                     itemView.getContext().startActivity(i);
 
                 }
