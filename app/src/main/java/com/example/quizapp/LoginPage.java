@@ -187,8 +187,8 @@ public class LoginPage extends AppCompatActivity {
                                                 Intent i = new Intent(LoginPage.this, MainActivity.class);
                                                 startActivity(i);
                                                 finish();
-                                            }
 
+                                            }
                                             @Override
                                             public void onFailure() {
                                                 progressDialog.dismiss();
@@ -215,12 +215,21 @@ public class LoginPage extends AppCompatActivity {
                                     @Override
                                     public void onSuccess() {
                                         DataBase.loadTestData(new MyCompleteListener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                progressDialog.dismiss();
-                                                Intent i = new Intent(LoginPage.this, MainActivity.class);
-                                                startActivity(i);
-                                                finish();
+                                                    @Override
+                                                    public void onSuccess() {
+                                                        progressDialog.dismiss();
+                                                        Intent i = new Intent(LoginPage.this, MainActivity.class);
+                                                        startActivity(i);
+                                                        finish();
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure() {
+                                                        progressDialog.dismiss();
+                                                        Toast.makeText(LoginPage.this, "error fetching data", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+
 
                                             }
 
@@ -233,14 +242,6 @@ public class LoginPage extends AppCompatActivity {
                                         });
                                     }
 
-                                    @Override
-                                    public void onFailure() {
-
-                                        Toast.makeText(LoginPage.this, "error fetch data", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-                            }
 
 
                         } else {

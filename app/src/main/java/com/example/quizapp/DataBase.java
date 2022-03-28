@@ -238,25 +238,32 @@ public class DataBase {
 
     }
 
-    public static void loadScore(MyCompleteListener myCompleteListener) {
-        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
-                .collection("USER_DATA").document("MY_SCORE")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    public static void sendResult(int score, MyCompleteListener myCompleteListener) {
+
+        WriteBatch writeBatch = db.batch();
+
+        DocumentReference userDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
+        writeBatch.update(userDocument, "TOTAL_SCORE", score);
+
+//        if statement make sure that no less score is updated in DB
+        if (score > g_test_List.get(selectedTestIndex).getTopScore()) {
+
+            DocumentReference scoreDocument = userDocument.collection("USER_DATA").document("MY_SCORE");
+            Map<String, Object> testData = new ArrayMap<>();
+            testData.put(g_test_List.get(selectedTestIndex).getTestID(), score);
+            writeBatch.set(scoreDocument, testData, SetOptions.merge());
+        }
+
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                        for (int i = 0; i < g_test_List.size(); i++) {
-
-
-                              int  top = documentSnapshot.getLong(g_test_List.get(i).getTestID()).intValue();
-                                g_test_List.get(i).setTopScore(top);
-                                Log.d("top", "onSuccess: "+top);
-
-
-
-                        }
+                    public void onSuccess(Void unused) {
+                        Log.d("top", "onSuccess: " + score);
+                        g_test_List.get(selectedTestIndex).setTopScore(score);
+                        performance.setTotalScore(score);
                         myCompleteListener.onSuccess();
+
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -267,28 +274,24 @@ public class DataBase {
                 });
     }
 
-    public static void sendResult(int score, MyCompleteListener myCompleteListener) {
-
-        WriteBatch writeBatch = db.batch();
-
-        DocumentReference userDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
-        writeBatch.update(userDocument, "TOTAL_SCORE", score);
-
-        DocumentReference scoreDocument = userDocument.collection("USER_DATA").document("MY_SCORE");
-        Map<String, Object> testData = new ArrayMap<>();
-        testData.put(g_test_List.get(selectedTestIndex).getTestID(), score);
-        writeBatch.set(scoreDocument, testData, SetOptions.merge());
-
-        writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+    public static void loadScore(MyCompleteListener myCompleteListener) {
+        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                .collection("USER_DATA").document("MY_SCORE")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("top", "onSuccess: "+score);
-                        g_test_List.get(selectedTestIndex).setTopScore(score);
-                        performance.setTotalScore(score);
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        for (int i = 0; i < g_test_List.size(); i++) {
+                            if(documentSnapshot.get(g_test_List.get(i).getTestID()) != null){
+
+                                int top = documentSnapshot.getLong(g_test_List.get(i).getTestID()).intValue();
+                                g_test_List.get(i).setTopScore(top);
+                            }
+
+                        }
+
                         myCompleteListener.onSuccess();
-
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
