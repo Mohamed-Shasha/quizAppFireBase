@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -25,7 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 public class AccountFragment extends Fragment {
 
-private Button logoutButton;
+private ImageView logoutButton;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -37,7 +38,7 @@ private Button logoutButton;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_account, container, false);
-        logoutButton  = view.findViewById(R.id.buttonLogOut);
+        logoutButton  = view.findViewById(R.id.imageView_logout);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

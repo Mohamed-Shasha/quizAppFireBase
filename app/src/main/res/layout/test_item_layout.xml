@@ -14,7 +14,8 @@
         android:elevation="5dp"
         android:gravity="center"
         android:padding="16dp"
-        android:background="#EBE7EF">
+        android:background="#EAE3EF"
+        >
 
 
         <TextView

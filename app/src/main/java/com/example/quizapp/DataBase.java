@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.quizapp.Adapter.RankModel;
+import com.example.quizapp.Model.RankModel;
 import com.example.quizapp.Model.CategoryModel;
 import com.example.quizapp.Model.ProfileModel;
 import com.example.quizapp.Model.QuestionModel;

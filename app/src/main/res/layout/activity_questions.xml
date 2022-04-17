@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D5DFE8"
+    android:background="@drawable/gradient"
     tools:context=".Questions">
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="1/20"
-            android:textColor="@color/teal_200"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -34,17 +34,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textSize="20sp"
             android:text="20 :15"
-            android:textColor="@color/teal_200"
+            android:textColor="@color/white"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button_submit"
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/teal_200"
+            android:backgroundTint="#DAB3EF"
             android:text="submit"
+            android:textSize="16sp"
             android:textColor="@color/black" />
 
     </LinearLayout>
@@ -98,37 +100,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/imageButton_previous"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="30dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/teal_200"
             app:srcCompat="@drawable/ic_left"
 
             />
 
         <ImageButton
             android:id="@+id/question_imageButton_flag"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="5dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@drawable/ic_flag"
-            android:backgroundTint="@color/teal_200"
             android:text="Flag" />
 
         <ImageButton
             android:id="@+id/question_imageButton_clear"
-            android:layout_width="wrap_content"
+            android:layout_width="5dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_weight="1"
             android:background="@drawable/ic_clear"
-            android:backgroundTint="@color/teal_200" />
+            />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/question_imageButton_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

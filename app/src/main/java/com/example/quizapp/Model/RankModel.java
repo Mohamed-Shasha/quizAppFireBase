@@ -1,4 +1,4 @@
-package com.example.quizapp.Adapter;
+package com.example.quizapp.Model;
 
 public class RankModel {
     private int totalScore;

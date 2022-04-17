@@ -40,7 +40,8 @@ public class Questions extends AppCompatActivity {
     private RecyclerView questionView;
     private TextView question_ID, timer_question, question_cat_Name;
     private Button submit;
-    private ImageButton previous_question, next_question, clear, flag;
+    private ImageView previous_question, next_question;
+    private ImageButton clear, flag;
 
     private ImageView question_List, flag_image;
     private QuestionAdapter questionAdapter;
@@ -224,7 +225,7 @@ public class Questions extends AppCompatActivity {
 
                 Intent i = new Intent(Questions.this, Score.class);
                 long totalTime = (long) g_test_List.get(selectedTestIndex).getTime() * 60 * 1000;
-                i.putExtra("Time_Taken", testTime - timeTaken);
+                i.putExtra("Time_Taken", totalTime - timeTaken);
                 startActivity(i);
                 Questions.this.finish();
 
