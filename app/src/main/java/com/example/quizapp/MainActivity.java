@@ -24,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Locale;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                  setFragment(new CategoryFragment());
+                    setFragment(new CategoryFragment());
                     return true;
                 case R.id.nav_account:
                     setFragment(new AccountFragment());
                     return true;
                 case R.id.nav_stats:
-                   setFragment(new StatsFragment());
+                    setFragment(new StatsFragment());
                     return true;
             }
             return false;
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         setSupportActionBar(findViewById(R.id.toolbar));
-
+        (getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Categories");
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         String name = DataBase.profile.getName();
 
         drawerProfileName.setText(name);
-       drawerProfileText.setText(name.toUpperCase().substring(0, 1));
+        drawerProfileText.setText(name.toUpperCase().substring(0, 1));
     }
 //        mAppBarConfiguration = new AppBarConfiguration.Builder(
 //                R.id.nav_home, R.id.nav_account, R.id.nav_board)

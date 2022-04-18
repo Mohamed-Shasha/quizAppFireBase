@@ -43,7 +43,7 @@ public class DataBase {
     public static final int ANSWERED = 2;
     public static final int REVIEW = 3;
 
-    public static ProfileModel profile = new ProfileModel("n", null);
+    public static ProfileModel profile = new ProfileModel("n", null, null);
     public static RankModel performance = new RankModel(0, -1);
 
 
@@ -92,6 +92,10 @@ public class DataBase {
 
                         profile.setName(documentSnapshot.getString("NAME"));
                         profile.setEmail(documentSnapshot.getString("EMAIL_ID"));
+
+                        if (documentSnapshot.getString("PHONE") != null) {
+                            profile.setPhoneNumber(documentSnapshot.getString("PHONE"));
+                        }
 //                        performance.setTotalScore(documentSnapshot.getLong("TOTAL_SCORE").intValue());
                         myCompleteListener.onSuccess();
                     }
@@ -103,6 +107,35 @@ public class DataBase {
 
                     }
                 });
+    }
+
+    public static void updateProfileDate(String name, String phone, MyCompleteListener myCompleteListener) {
+
+        Map<String, Object> profileData = new ArrayMap<>();
+
+        profileData.put("NAME", name);
+        profileData.put("PHONE", phone);
+
+
+        ;
+
+        db.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                .update(profileData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        profile.setName(name);
+                        profile.setPhoneNumber(phone);
+                        myCompleteListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        myCompleteListener.onFailure();
+                    }
+                });
+
     }
 
     public static void loadUserDate(MyCompleteListener myCompleteListener) {
@@ -283,7 +316,7 @@ public class DataBase {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
 
                         for (int i = 0; i < g_test_List.size(); i++) {
-                            if(documentSnapshot.get(g_test_List.get(i).getTestID()) != null){
+                            if (documentSnapshot.get(g_test_List.get(i).getTestID()) != null) {
 
                                 int top = documentSnapshot.getLong(g_test_List.get(i).getTestID()).intValue();
                                 g_test_List.get(i).setTopScore(top);
