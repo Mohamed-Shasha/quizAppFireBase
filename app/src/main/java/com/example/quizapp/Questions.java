@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.quizapp.Adapter.QuestionAdapter;
@@ -40,13 +41,14 @@ public class Questions extends AppCompatActivity {
     private RecyclerView questionView;
     private TextView question_ID, timer_question, question_cat_Name;
     private Button submit;
-    private ImageView previous_question, next_question;
-    private ImageButton clear, flag;
+    private ImageView previous_question, next_question,flag_image;
 
-    private ImageView question_List, flag_image;
+
+    private  LinearLayout  question_List,clear, flag;
     private QuestionAdapter questionAdapter;
     private int questionID_Number;
     long testTime;
+
 
     private DrawerLayout drawer;
 
@@ -69,7 +71,7 @@ public class Questions extends AppCompatActivity {
         timer_question = findViewById(R.id.textView_question_timer);
         submit = findViewById(R.id.button_submit);
         previous_question = findViewById(R.id.imageButton_previous);
-        next_question = findViewById(R.id.question_imageButton_next);
+        next_question = findViewById(R.id.imageButton_next);
         flag = findViewById(R.id.question_imageButton_flag);
         clear = findViewById(R.id.question_imageButton_clear);
         drawer = findViewById(R.id.drawer_question);
