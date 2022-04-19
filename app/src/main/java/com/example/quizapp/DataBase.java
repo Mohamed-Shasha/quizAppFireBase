@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -37,14 +38,16 @@ public class DataBase {
     public static List<TestModel> g_test_List = new ArrayList<>();
 
     public static List<QuestionModel> g_question_list = new ArrayList<>();
-
+    public static int usersTotal = 0;
+    public static boolean inTopList = false;
+    public static List<RankModel> usersList = new ArrayList<>();
     public static final int NOT_VISITED = 0;
     public static final int UNANSWERED = 1;
     public static final int ANSWERED = 2;
     public static final int REVIEW = 3;
 
     public static ProfileModel profile = new ProfileModel("n", null, null);
-    public static RankModel performance = new RankModel(0, -1);
+    public static RankModel performance = new RankModel(0, -1, null);
 
 
     static void createUser(String email, String name, MyCompleteListener completeListener) {
@@ -142,7 +145,17 @@ public class DataBase {
         loadCategories(new MyCompleteListener() {
             @Override
             public void onSuccess() {
-                getProfile(myCompleteListener);
+                getProfile(new MyCompleteListener() {
+                    @Override
+                    public void onSuccess() {
+                        getTotalUsers(myCompleteListener);
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        myCompleteListener.onFailure();
+                    }
+                });
 
             }
 
@@ -334,6 +347,72 @@ public class DataBase {
                     }
                 });
     }
+
+    public static void getTopUsers(MyCompleteListener myCompleteListener) {
+        usersList.clear();
+        String uID = FirebaseAuth.getInstance().getUid();
+
+        db.collection("USERS")
+                .whereGreaterThan("TOTAL_SCORE", 0)
+                .orderBy("TOTAL_SCORE", Query.Direction.DESCENDING)
+                .limit(20)
+                .get()
+
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        int rank = 1;
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                            usersList.add(
+                                    new RankModel(
+                                            queryDocumentSnapshot.getLong("TOTAL_SCORE").intValue(),
+                                            rank,
+                                            queryDocumentSnapshot.getString("NAME")
+                                    )
+                            );
+                            if (uID.compareTo(queryDocumentSnapshot.getId()) == 0) {
+                                inTopList = true;
+                                performance.setRank(rank);
+                            }
+                            rank++;
+                        }
+
+
+                        myCompleteListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        myCompleteListener.onFailure();
+                    }
+                });
+    }
+
+    public static void getTotalUsers(MyCompleteListener myCompleteListener) {
+
+        db.collection("USERS").document("TOTAL_USERS")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        usersTotal = documentSnapshot.getLong("COUNT").intValue();
+
+
+                        myCompleteListener.onSuccess();
+                    }
+
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        myCompleteListener.onFailure();
+                    }
+                });
+    }
+
 
 
 }
