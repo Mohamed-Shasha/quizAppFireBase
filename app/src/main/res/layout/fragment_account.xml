@@ -57,7 +57,6 @@
             android:id="@+id/nameView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/aclonica"
             android:padding="8dp"
             android:text="Name"
             android:textAlignment="center"
@@ -102,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/aclonica"
+
                     android:text="Rank"
                     android:textColor="#130505"
                     android:textSize="20sp"
@@ -132,7 +131,7 @@
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/aclonica"
+
                     android:text="Total Score"
                     android:textColor="#0E0606"
                     android:textSize="20sp"
