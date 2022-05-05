@@ -67,7 +67,7 @@ public class AccountFragment extends Fragment {
         progressDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialogText = progressDialog.findViewById(R.id.textViewDialog);
         dialogText.setText("loading");
-        progressDialog.show();
+
         logoutButton = view.findViewById(R.id.logoutView);
         profile = view.findViewById(R.id.profileView);
         savedAnswers = view.findViewById(R.id.bookmarkedView);
@@ -83,10 +83,10 @@ public class AccountFragment extends Fragment {
 
 
 
-        if(DataBase.usersList.size()==0){
+        if (DataBase.usersList.size() == 0) {
             progressDialog.show();
-            DataBase.getTopUsers(new MyCompleteListener() {
 
+            DataBase.getTopUsers(new MyCompleteListener() {
                 @Override
                 public void onSuccess() {
 
@@ -111,12 +111,9 @@ public class AccountFragment extends Fragment {
 
 
         }
-        else {
-            score.setText("Score" + DataBase.performance.getTotalScore());
-            if(DataBase.performance.getTotalScore()!=0){
-                rank.setText("Rank" + DataBase.performance.getRank());
-            }
-
+        else{
+            score.setText(DataBase.performance.getTotalScore());
+            rank.setText(DataBase.performance.getRank());
         }
 
 
@@ -157,7 +154,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent i  = new Intent(getContext(), Profile.class);
+                Intent i = new Intent(getContext(), Profile.class);
                 startActivity(i);
             }
         });
