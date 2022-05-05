@@ -45,7 +45,6 @@ public class DataBase {
     public static final int UNANSWERED = 1;
     public static final int ANSWERED = 2;
     public static final int REVIEW = 3;
-
     public static ProfileModel profile = new ProfileModel("n", null, null);
     public static RankModel performance = new RankModel(0, -1, null);
 
@@ -55,7 +54,7 @@ public class DataBase {
         Map<String, Object> userData = new HashMap<>();
         userData.put("EMAIL_ID", email);
         userData.put("NAME", name);
-        userData.put("TOTAL_SCORE", 20);
+        userData.put("TOTAL_SCORE", 0);
 
         // multiple writes in single atomic
         WriteBatch batch = db.batch();
@@ -96,6 +95,7 @@ public class DataBase {
                         profile.setName(documentSnapshot.getString("NAME"));
                         profile.setEmail(documentSnapshot.getString("EMAIL_ID"));
 
+
                         if (documentSnapshot.getString("PHONE") != null) {
                             profile.setPhoneNumber(documentSnapshot.getString("PHONE"));
                         }
@@ -120,9 +120,9 @@ public class DataBase {
         profileData.put("PHONE", phone);
 
 
-        ;
 
-        db.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+
+        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                 .update(profileData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -288,8 +288,9 @@ public class DataBase {
 
         WriteBatch writeBatch = db.batch();
 
+
         DocumentReference userDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
-        writeBatch.update(userDocument, "TOTAL_SCORE", score);
+//    writeBatch.update(userDocument, "TOTAL_SCORE",performance.getTotalScore() );
 
 //        if statement make sure that no less score is updated in DB
         if (score > g_test_List.get(selectedTestIndex).getTopScore()) {
@@ -306,7 +307,8 @@ public class DataBase {
                     public void onSuccess(Void unused) {
                         Log.d("top", "onSuccess: " + score);
                         g_test_List.get(selectedTestIndex).setTopScore(score);
-                        performance.setTotalScore(score);
+
+
                         myCompleteListener.onSuccess();
 
 
@@ -318,6 +320,8 @@ public class DataBase {
                         myCompleteListener.onFailure();
                     }
                 });
+
+        updateTotalScore();
     }
 
     public static void loadScore(MyCompleteListener myCompleteListener) {
@@ -333,6 +337,7 @@ public class DataBase {
 
                                 int top = documentSnapshot.getLong(g_test_List.get(i).getTestID()).intValue();
                                 g_test_List.get(i).setTopScore(top);
+
                             }
 
                         }
@@ -346,7 +351,41 @@ public class DataBase {
                         myCompleteListener.onFailure();
                     }
                 });
+
     }
+    public static void updateTotalScore(){
+
+        final int[] sum = {0};
+        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                .collection("USER_DATA").document("MY_SCORE")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        List<Integer> numbers = new ArrayList<>();
+                        Map<String, Object> map = documentSnapshot.getData();
+                        assert map != null;
+
+                        for (Map.Entry<String, Object> entry : map.entrySet()) {
+
+                            numbers.add(Integer.parseInt(entry.getValue().toString()));
+                        }
+
+                        for (int i = 0; i < numbers.size(); i++){
+                            sum[0] += numbers.get(i);
+
+                    }
+                        DocumentReference userDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
+                        userDocument.update("TOTAL_SCORE", sum[0]);
+                        performance.setTotalScore(sum[0]);
+                        numbers.clear();
+
+
+                    }
+                });
+
+    }
+
 
     public static void getTopUsers(MyCompleteListener myCompleteListener) {
         usersList.clear();

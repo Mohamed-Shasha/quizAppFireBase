@@ -88,8 +88,7 @@ public class StartTest extends AppCompatActivity {
     }
 
 
-
-
+// set the Test Data Page from Model
     private void setDate() {
         st_cat_name.setText(g_cat_List.get(cat_index).getCategoryName());
         st_test_number.setText("Test Number" + String.valueOf(selectedTestIndex+1));

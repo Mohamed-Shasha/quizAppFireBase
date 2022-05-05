@@ -16,7 +16,7 @@ public class RankModel {
     }
 
     public void setTotalScore(int totalScore) {
-        this.totalScore = totalScore;
+        this.totalScore =totalScore;
     }
 
     public int getRank() {

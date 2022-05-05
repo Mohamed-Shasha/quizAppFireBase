@@ -8,6 +8,7 @@ import static com.example.quizapp.DataBase.g_question_list;
 import static com.example.quizapp.DataBase.g_test_List;
 import static com.example.quizapp.DataBase.selectedTestIndex;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -163,6 +164,7 @@ public class Questions extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showDialog();
+
 
             }
         });

@@ -1,5 +1,6 @@
 package com.example.quizapp;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -58,11 +59,18 @@ public class StatsFragment extends Fragment {
         usersView.setAdapter(rankAdapter);
 
         DataBase.getTopUsers(new MyCompleteListener() {
+
             @Override
             public void onSuccess() {
                 rankAdapter.notifyDataSetChanged();
-                score.setText("Score" +DataBase.performance.getTotalScore());
-                rank.setText("Score" +DataBase.performance.getRank());
+                if(DataBase.performance.getTotalScore()!=0){
+                    if(!DataBase.inTopList){
+                       myRankCal();
+                    }
+                    score.setText("Score" +DataBase.performance.getTotalScore());
+                    rank.setText("Score" +DataBase.performance.getRank());
+                }
+
             }
 
             @Override
@@ -77,6 +85,8 @@ public class StatsFragment extends Fragment {
     }
 
     private void myRankCal(){
+int lowestScore = DataBase.usersList.get(DataBase.usersList.size()-1).getTotalScore();
+
 
     }
 }

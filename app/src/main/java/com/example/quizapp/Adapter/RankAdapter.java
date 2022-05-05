@@ -44,6 +44,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
+
         return userModelList.size();
     }
 
