@@ -71,6 +71,7 @@ public class StatsFragment extends Fragment {
         usersView.setAdapter(rankAdapter);
         progressDialog.show();
         DataBase.getTopUsers(new MyCompleteListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onSuccess() {
                 rankAdapter.notifyDataSetChanged();

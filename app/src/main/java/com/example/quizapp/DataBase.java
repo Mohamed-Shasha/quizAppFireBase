@@ -290,9 +290,7 @@ public class DataBase {
 
 
         DocumentReference userDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
-//    writeBatch.update(userDocument, "TOTAL_SCORE",performance.getTotalScore() );
 
-//        if statement make sure that no less score is updated in DB
         if (score > g_test_List.get(selectedTestIndex).getTopScore()) {
 
             DocumentReference scoreDocument = userDocument.collection("USER_DATA").document("MY_SCORE");
@@ -354,6 +352,7 @@ public class DataBase {
 
     }
 
+
     public static void updateTotalScore() {
 
         final int[] sum = {0};
@@ -363,16 +362,21 @@ public class DataBase {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+
                         List<Integer> numbers = new ArrayList<>();
+//                        get my_score Data and store it in a map
                         Map<String, Object> map = documentSnapshot.getData();
                         assert map != null;
 
+//                        iterate through the map
                         for (Map.Entry<String, Object> entry : map.entrySet()) {
 
+//                            add numbers to the numbers list
                             numbers.add(Integer.parseInt(entry.getValue().toString()));
                         }
 
                         for (int i = 0; i < numbers.size(); i++) {
+//                            total score summed
                             sum[0] += numbers.get(i);
 
                         }

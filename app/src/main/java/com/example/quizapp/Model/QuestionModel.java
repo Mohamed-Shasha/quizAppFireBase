@@ -29,7 +29,7 @@ public class QuestionModel {
         this.question = question;
     }
 
-    public String getOptionA() {
+    public String  getOptionA() {
         return optionA;
     }
 

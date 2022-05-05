@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.quizapp.Adapter.AnswersAdapter;
 import com.google.firestore.v1.TargetOrBuilder;
 
 import java.util.concurrent.TimeUnit;
@@ -60,13 +61,11 @@ public class Score extends AppCompatActivity {
 
 
 
-        viewAnswers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
+
+        loadData();
+        saveResult();
         reattempt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,9 +73,14 @@ public class Score extends AppCompatActivity {
             }
         });
 
-        loadData();
-        saveResult();
+        viewAnswers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Score.this, Answers.class);
+                startActivity(i);
 
+            }
+        });
 
     }
 
