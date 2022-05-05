@@ -94,8 +94,8 @@ public class AccountFragment extends Fragment {
                         if (!DataBase.inTopList) {
                             myRankCal();
                         }
-                        score.setText("Score" + DataBase.performance.getTotalScore());
-                        rank.setText("Rank" + DataBase.performance.getRank());
+                        score.setText(""+DataBase.performance.getTotalScore());
+                        rank.setText(""+DataBase.performance.getRank());
                     }
                     progressDialog.dismiss();
                 }
@@ -112,8 +112,10 @@ public class AccountFragment extends Fragment {
 
         }
         else{
-            score.setText(DataBase.performance.getTotalScore());
-            rank.setText(DataBase.performance.getRank());
+
+            progressDialog.dismiss();
+            score.setText(""+DataBase.performance.getTotalScore());
+            rank.setText(""+DataBase.performance.getRank());
         }
 
 
