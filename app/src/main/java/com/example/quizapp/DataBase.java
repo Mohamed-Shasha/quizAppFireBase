@@ -46,7 +46,7 @@ public class DataBase {
     public static final int ANSWERED = 2;
     public static final int REVIEW = 3;
     public static ProfileModel profile = new ProfileModel("n", null, null);
-    public static RankModel performance = new RankModel(0, -1, null);
+    public static RankModel performance = new RankModel(0, -1, "n");
 
 
     static void createUser(String email, String name, MyCompleteListener completeListener) {
@@ -98,8 +98,10 @@ public class DataBase {
 
                         if (documentSnapshot.getString("PHONE") != null) {
                             profile.setPhoneNumber(documentSnapshot.getString("PHONE"));
+
                         }
-//                        performance.setTotalScore(documentSnapshot.getLong("TOTAL_SCORE").intValue());
+                        performance.setName(documentSnapshot.getString("NAME"));
+                        performance.setTotalScore(documentSnapshot.getLong("TOTAL_SCORE").intValue());
                         myCompleteListener.onSuccess();
                     }
                 })
@@ -118,8 +120,6 @@ public class DataBase {
 
         profileData.put("NAME", name);
         profileData.put("PHONE", phone);
-
-
 
 
         db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
@@ -353,7 +353,8 @@ public class DataBase {
                 });
 
     }
-    public static void updateTotalScore(){
+
+    public static void updateTotalScore() {
 
         final int[] sum = {0};
         db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
@@ -371,10 +372,10 @@ public class DataBase {
                             numbers.add(Integer.parseInt(entry.getValue().toString()));
                         }
 
-                        for (int i = 0; i < numbers.size(); i++){
+                        for (int i = 0; i < numbers.size(); i++) {
                             sum[0] += numbers.get(i);
 
-                    }
+                        }
                         DocumentReference userDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
                         userDocument.update("TOTAL_SCORE", sum[0]);
                         performance.setTotalScore(sum[0]);
@@ -451,7 +452,6 @@ public class DataBase {
                     }
                 });
     }
-
 
 
 }
