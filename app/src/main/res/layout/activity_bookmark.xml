@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:popupTheme="@style/Theme.QuizApp.AppBarOverlay"
+    android:theme="@style/Theme.QuizApp.AppBarOverlay"
     tools:context=".Bookmark">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/bookmark_toolbar"
-        style="@style/ThemeOverlay.AppCompat.Dark"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/purple"
-        app:popupTheme="@style/Theme.QuizApp.AppBarOverlay"
+        style="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
