@@ -86,7 +86,7 @@ public class Profile extends AppCompatActivity {
     private void sendDate() {
 
         progressDialog.show();
-        DataBase.updateProfileDate(nameInserted,emailInserted, phoneInserted, new MyCompleteListener() {
+        DataBase.updateProfileDate(nameInserted,phoneInserted ,new MyCompleteListener() {
             @Override
             public void onSuccess() {
                 Toast.makeText(Profile.this,"Updating Data Succeed",Toast.LENGTH_SHORT).show();
@@ -117,10 +117,7 @@ public class Profile extends AppCompatActivity {
             editPhone.setError("Phone number is not Valid");
             return false;
         }
-        if (emailInserted.isEmpty() ){
-            editEmail.setError("Email is not Valid");
-            return false;
-        }
+
 
             return true;
 

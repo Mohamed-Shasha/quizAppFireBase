@@ -10,9 +10,14 @@ import com.example.quizapp.Model.CategoryModel;
 import com.example.quizapp.Model.ProfileModel;
 import com.example.quizapp.Model.QuestionModel;
 import com.example.quizapp.Model.TestModel;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -36,6 +41,7 @@ public class DataBase {
     public static int cat_index = 0;
     public static int selectedTestIndex = 0;
     public static List<TestModel> g_test_List = new ArrayList<>();
+    public static FirebaseAuth mAuth;
 
     public static List<QuestionModel> g_question_list = new ArrayList<>();
     public static List<QuestionModel> g_question_bookmarked = new ArrayList<>();
@@ -122,13 +128,13 @@ public class DataBase {
                 });
     }
 
-    public static void updateProfileDate(String name,  String email, String phone, MyCompleteListener myCompleteListener) {
+    public static void updateProfileDate(String name, String phone,MyCompleteListener myCompleteListener) {
 
         Map<String, Object> profileData = new ArrayMap<>();
 
         profileData.put("NAME", name);
         profileData.put("PHONE", phone);
-        profileData.put("EMAIL_ID", email);
+
 
 
         db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
@@ -138,7 +144,6 @@ public class DataBase {
                     public void onSuccess(Void unused) {
                         profile.setName(name);
                         profile.setPhoneNumber(phone);
-                        profile.setEmail(email);
                         myCompleteListener.onSuccess();
                     }
                 })
