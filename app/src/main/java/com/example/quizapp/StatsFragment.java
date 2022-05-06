@@ -45,7 +45,7 @@ public class StatsFragment extends Fragment {
 //        Toolbar toolbar = findViewById(R.id.toolbar_test);
 //        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Stats");
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Rank");
 
         progressDialog = new Dialog(getContext());
         progressDialog.setContentView(R.layout.dialog_layout);

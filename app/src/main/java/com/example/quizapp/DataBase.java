@@ -36,7 +36,7 @@ public class DataBase {
     public static int cat_index = 0;
     public static int selectedTestIndex = 0;
     public static List<TestModel> g_test_List = new ArrayList<>();
-    static int temp;
+
     public static List<QuestionModel> g_question_list = new ArrayList<>();
     public static List<QuestionModel> g_question_bookmarked = new ArrayList<>();
     public static int usersTotal = 0;
@@ -109,6 +109,7 @@ public class DataBase {
                         }
                         performance.setName(documentSnapshot.getString("NAME"));
                         performance.setTotalScore(documentSnapshot.getLong("TOTAL_SCORE").intValue());
+
                         myCompleteListener.onSuccess();
                     }
                 })
@@ -431,7 +432,7 @@ public class DataBase {
     public static void loadBookmarkId(MyCompleteListener myCompleteListener) {
         g_bookmarkIdList.clear();
 
-        db.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                 .collection("USER_DATA").document("BOOKMARKS")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -462,7 +463,7 @@ public class DataBase {
     public static void loadBookmarkedQues(MyCompleteListener myCompleteListener) {
 
         g_question_bookmarked.clear();
-        temp = 0;
+        final int[] temp = {0};
 
         if (g_bookmarkIdList.size() == 0) {
             myCompleteListener.onSuccess();
@@ -491,9 +492,9 @@ public class DataBase {
                                         false
                                 ));
                             }
-                            temp++;
+                            temp[0]++;
 
-                            if (temp == g_bookmarkIdList.size()) {
+                            if (temp[0] == g_bookmarkIdList.size()) {
                                 myCompleteListener.onSuccess();
                             }
                         }
