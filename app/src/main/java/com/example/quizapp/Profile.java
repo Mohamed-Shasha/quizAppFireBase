@@ -128,7 +128,7 @@ public class Profile extends AppCompatActivity {
         saveEdit.setVisibility(View.VISIBLE);
         cancelEdit.setVisibility(View.VISIBLE);
         editName.setEnabled(true);
-        editEmail.setEnabled(true);
+
         editPhone.setEnabled(true);
 
     }
