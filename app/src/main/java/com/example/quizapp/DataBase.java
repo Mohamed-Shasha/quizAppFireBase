@@ -122,12 +122,13 @@ public class DataBase {
                 });
     }
 
-    public static void updateProfileDate(String name, String phone, MyCompleteListener myCompleteListener) {
+    public static void updateProfileDate(String name,  String email, String phone, MyCompleteListener myCompleteListener) {
 
         Map<String, Object> profileData = new ArrayMap<>();
 
         profileData.put("NAME", name);
         profileData.put("PHONE", phone);
+        profileData.put("EMAIL_ID", email);
 
 
         db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
@@ -137,6 +138,7 @@ public class DataBase {
                     public void onSuccess(Void unused) {
                         profile.setName(name);
                         profile.setPhoneNumber(phone);
+                        profile.setEmail(email);
                         myCompleteListener.onSuccess();
                     }
                 })

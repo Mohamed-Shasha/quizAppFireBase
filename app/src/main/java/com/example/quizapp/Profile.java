@@ -26,7 +26,7 @@ public class Profile extends AppCompatActivity {
     private Dialog progressDialog;
     private TextView dialogText;
 
-    private String nameInserted, phoneInserted;
+    private String nameInserted, phoneInserted, emailInserted;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -86,7 +86,7 @@ public class Profile extends AppCompatActivity {
     private void sendDate() {
 
         progressDialog.show();
-        DataBase.updateProfileDate(nameInserted, phoneInserted, new MyCompleteListener() {
+        DataBase.updateProfileDate(nameInserted,emailInserted, phoneInserted, new MyCompleteListener() {
             @Override
             public void onSuccess() {
                 Toast.makeText(Profile.this,"Updating Data Succeed",Toast.LENGTH_SHORT).show();
@@ -108,13 +108,17 @@ public class Profile extends AppCompatActivity {
 
         nameInserted =editName.getText().toString();
         phoneInserted =editPhone.getText().toString();
-
+        emailInserted =editEmail.getText().toString();
         if (nameInserted.isEmpty()){
             editName.setError("Name cannot be empty");
             return false;
         }
          if (phoneInserted.isEmpty() ){
             editPhone.setError("Phone number is not Valid");
+            return false;
+        }
+        if (emailInserted.isEmpty() ){
+            editEmail.setError("Email is not Valid");
             return false;
         }
 
