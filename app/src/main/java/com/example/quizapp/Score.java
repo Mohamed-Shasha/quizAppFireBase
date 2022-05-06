@@ -60,11 +60,8 @@ public class Score extends AppCompatActivity {
         reattempt = findViewById(R.id.reattempt);
 
 
-
-
-
-
         loadData();
+        setBookmark();
         saveResult();
         reattempt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +79,28 @@ public class Score extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setBookmark() {
+
+        for (int i = 0; i < DataBase.g_question_list.size(); i++) {
+            if (DataBase.g_question_list.get(i).isBookmarked()) {
+
+//                this is bookmarked question with ID is not the bookmark list fetched shall to be added
+                if (!DataBase.g_bookmarkIdList.contains(DataBase.g_question_list.get(i).getQuestionID())) {
+                    DataBase.g_bookmarkIdList.add(DataBase.g_question_list.get(i).getQuestionID());
+                    DataBase.profile.setBookmarkCount(DataBase.g_bookmarkIdList.size());
+                }
+
+            } else {
+
+//                this is question with ID is not the list fetched shall to be removed if found in bookmark list
+                if(DataBase.g_bookmarkIdList.contains(DataBase.g_question_list.get(i).getQuestionID())){
+                    DataBase.g_bookmarkIdList.remove(DataBase.g_question_list.get(i).getQuestionID());
+                    DataBase.profile.setBookmarkCount(DataBase.g_bookmarkIdList.size());
+                }
+            }
+        }
     }
 
 
@@ -133,14 +152,14 @@ public class Score extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 progressDialog.dismiss();
-                Log.d("score", ""+grade);
+                Log.d("score", "" + grade);
 
             }
 
             @Override
             public void onFailure() {
 
-                Toast.makeText(Score.this,"Error sending score to DB",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Score.this, "Error sending score to DB", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
 
             }

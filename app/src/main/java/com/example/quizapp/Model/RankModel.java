@@ -9,6 +9,7 @@ public class RankModel {
         this.totalScore = totalScore;
         this.rank = rank;
         this.name = name;
+
     }
 
     public int getTotalScore() {

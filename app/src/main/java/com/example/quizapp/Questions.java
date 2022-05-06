@@ -42,10 +42,9 @@ public class Questions extends AppCompatActivity {
     private RecyclerView questionView;
     private TextView question_ID, timer_question, question_cat_Name;
     private Button submit;
-    private ImageView previous_question, next_question,flag_image;
+    private ImageView previous_question, next_question, flag_image, bookmarkImage;
 
-
-    private  LinearLayout  question_List,clear, flag;
+    private LinearLayout question_List, clear, flag, bookmark;
     private QuestionAdapter questionAdapter;
     private int questionID_Number;
     long testTime;
@@ -77,6 +76,8 @@ public class Questions extends AppCompatActivity {
         clear = findViewById(R.id.question_imageButton_clear);
         drawer = findViewById(R.id.drawer_question);
         questionsGridView = findViewById(R.id.question_gridView);
+        bookmark = findViewById(R.id.view_bookmark);
+        bookmarkImage = findViewById(R.id.imageView_bookmark);
         flag_image = findViewById(R.id.mark);
 
 
@@ -86,6 +87,12 @@ public class Questions extends AppCompatActivity {
 
         question_ID.setText("1/" + String.valueOf(g_question_list.size()));
         question_cat_Name.setText(DataBase.g_cat_List.get(DataBase.cat_index).getCategoryName());
+        if (g_question_list.get(0).isBookmarked()) {
+
+            bookmarkImage.setImageResource(R.drawable.addedbookmark);
+        } else {
+            bookmarkImage.setImageResource(R.drawable.ic_bookmark);
+        }
 
         questionAdapter = new QuestionAdapter(g_question_list);
         questionView.setAdapter(questionAdapter);
@@ -168,7 +175,28 @@ public class Questions extends AppCompatActivity {
 
             }
         });
+        bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToBookmark();
+            }
+        });
 
+
+    }
+
+    private void addToBookmark() {
+
+//        already bookedmarked
+        if (g_question_list.get(questionID_Number).isBookmarked()) {
+
+            g_question_list.get(questionID_Number).setBookmarked(false);
+        } else {
+//            add to bookmark
+            g_question_list.get(questionID_Number).setBookmarked(true);
+            bookmarkImage.setImageResource(R.drawable.addedbookmark);
+
+        }
     }
 
 
@@ -196,7 +224,17 @@ public class Questions extends AppCompatActivity {
                 } else {
                     flag_image.setVisibility(View.GONE);
                 }
+
+
+                if (g_question_list.get(questionID_Number).isBookmarked()) {
+
+                    bookmarkImage.setImageResource(R.drawable.addedbookmark);
+                } else {
+                    bookmarkImage.setImageResource(R.drawable.ic_bookmark);
+                }
+
             }
+
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {

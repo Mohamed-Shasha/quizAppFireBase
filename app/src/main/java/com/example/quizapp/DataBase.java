@@ -36,16 +36,18 @@ public class DataBase {
     public static int cat_index = 0;
     public static int selectedTestIndex = 0;
     public static List<TestModel> g_test_List = new ArrayList<>();
-
+    static int temp;
     public static List<QuestionModel> g_question_list = new ArrayList<>();
+    public static List<QuestionModel> g_question_bookmarked = new ArrayList<>();
     public static int usersTotal = 0;
     public static boolean inTopList = false;
     public static List<RankModel> usersList = new ArrayList<>();
+    public static List<String> g_bookmarkIdList = new ArrayList<>();
     public static final int NOT_VISITED = 0;
     public static final int UNANSWERED = 1;
     public static final int ANSWERED = 2;
     public static final int REVIEW = 3;
-    public static ProfileModel profile = new ProfileModel("n", null, null);
+    public static ProfileModel profile = new ProfileModel("n", null, null, 0);
     public static RankModel performance = new RankModel(0, -1, "n");
 
 
@@ -55,6 +57,7 @@ public class DataBase {
         userData.put("EMAIL_ID", email);
         userData.put("NAME", name);
         userData.put("TOTAL_SCORE", 0);
+        userData.put("BOOKMARKS", 0);
 
         // multiple writes in single atomic
         WriteBatch batch = db.batch();
@@ -98,6 +101,10 @@ public class DataBase {
 
                         if (documentSnapshot.getString("PHONE") != null) {
                             profile.setPhoneNumber(documentSnapshot.getString("PHONE"));
+
+                        }
+                        if (documentSnapshot.get("BOOKMARKS") != null) {
+                            profile.setBookmarkCount(documentSnapshot.getLong("BOOKMARKS").intValue());
 
                         }
                         performance.setName(documentSnapshot.getString("NAME"));
@@ -148,7 +155,18 @@ public class DataBase {
                 getProfile(new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
-                        getTotalUsers(myCompleteListener);
+                        getTotalUsers(new MyCompleteListener() {
+                            @Override
+                            public void onSuccess() {
+                                loadBookmarkId(myCompleteListener);
+
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                myCompleteListener.onFailure();
+                            }
+                        });
                     }
 
                     @Override
@@ -253,6 +271,10 @@ public class DataBase {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
+                            boolean isBookmarked = false;
+                            if (g_bookmarkIdList.contains(documentSnapshot.getId())) {
+                                isBookmarked = true;
+                            }
                             String question = documentSnapshot.getString("QUESTION");
                             String a = documentSnapshot.getString("A");
                             String b = documentSnapshot.getString("B");
@@ -261,7 +283,8 @@ public class DataBase {
                             int answer = documentSnapshot.getLong("ANSWER").intValue();
 
 
-                            g_question_list.add(new QuestionModel(question, a, b, c, d, answer, -1, NOT_VISITED));
+                            g_question_list.add(new QuestionModel(documentSnapshot.getId(),
+                                    question, a, b, c, d, answer, -1, NOT_VISITED, isBookmarked));
 
 
                         }
@@ -289,8 +312,22 @@ public class DataBase {
         WriteBatch writeBatch = db.batch();
 
 
+//       bookmarks
+        Map<String, Object> bookmarkData = new ArrayMap<>();
+
+        for (int i = 0; i < g_bookmarkIdList.size(); i++) {
+            bookmarkData.put("BM" + String.valueOf(i) + "_ID", g_bookmarkIdList.get(i));
+        }
+
+        DocumentReference bookmarkDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                .collection("USER_DATA").document("BOOKMARKS");
+
+
+        writeBatch.set(bookmarkDocument, bookmarkData);
+
         DocumentReference userDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
 
+        writeBatch.update(userDocument, "BOOKMARKS", g_bookmarkIdList.size());
         if (score > g_test_List.get(selectedTestIndex).getTopScore()) {
 
             DocumentReference scoreDocument = userDocument.collection("USER_DATA").document("MY_SCORE");
@@ -391,6 +428,87 @@ public class DataBase {
 
     }
 
+    public static void loadBookmarkId(MyCompleteListener myCompleteListener) {
+        g_bookmarkIdList.clear();
+
+        db.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                .collection("USER_DATA").document("BOOKMARKS")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+
+                        int count = profile.getBookmarkCount();
+
+                        for (int i = 0; i < count; i++) {
+                            String boomMarkId = documentSnapshot.getString("BM" + String.valueOf(i + 1) + "_ID");
+                            g_bookmarkIdList.add(boomMarkId);
+                        }
+
+                        myCompleteListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        myCompleteListener.onFailure();
+                    }
+                });
+
+
+    }
+
+    public static void loadBookmarkedQues(MyCompleteListener myCompleteListener) {
+
+        g_question_bookmarked.clear();
+        temp = 0;
+
+        if (g_bookmarkIdList.size() == 0) {
+            myCompleteListener.onSuccess();
+        }
+
+//        get question id to fetch info
+        for (int i = 0; i < g_bookmarkIdList.size(); i++) {
+
+            String documentID = g_bookmarkIdList.get(i);
+            db.collection("Questions").document(documentID)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                g_question_bookmarked.add(new QuestionModel(
+                                        documentSnapshot.getId(),
+                                        documentSnapshot.getString("QUESTION"),
+                                        documentSnapshot.getString("A"),
+                                        documentSnapshot.getString("B"),
+                                        documentSnapshot.getString("C"),
+                                        documentSnapshot.getString("D"),
+                                        documentSnapshot.getLong("ANSWER").intValue(),
+                                        0,
+                                        -1,
+                                        false
+                                ));
+                            }
+                            temp++;
+
+                            if (temp == g_bookmarkIdList.size()) {
+                                myCompleteListener.onSuccess();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            myCompleteListener.onFailure();
+                        }
+                    });
+
+        }
+
+
+    }
 
     public static void getTopUsers(MyCompleteListener myCompleteListener) {
         usersList.clear();

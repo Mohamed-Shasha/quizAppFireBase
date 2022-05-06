@@ -1,6 +1,7 @@
 package com.example.quizapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -89,7 +90,11 @@ public class MainActivity extends AppCompatActivity {
                 if (id == R.id.nav_home_drawer) {
                     setFragment(new CategoryFragment());
                 } else if (id == R.id.nav_account_drawer) {
-                    setFragment(new AccountFragment());
+                    setFragment(new AccountFragment());}
+                else if (id == R.id.nav_bookmark_drawer) {
+
+                    Intent i  = new Intent(MainActivity.this,Bookmark.class);
+                    startActivity(i);
                 } else if (id == R.id.nav_stats_drawer) {
                     setFragment(new StatsFragment());
                 }

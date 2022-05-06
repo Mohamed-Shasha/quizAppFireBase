@@ -15,6 +15,10 @@
         <item
             android:id="@+id/nav_stats_drawer"
             android:icon="@drawable/ic_board"
-            android:title="stats" />
+            android:title="Rank" />
+        <item
+            android:id="@+id/nav_bookmark_drawer"
+            android:icon="@drawable/ic_bookmark"
+            android:title="Saved Questions" />
     </group>
 </menu>
