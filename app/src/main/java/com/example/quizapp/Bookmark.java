@@ -45,8 +45,9 @@ import com.example.quizapp.Adapter.TestAdapter;
             progressDialog.setCancelable(false);
             progressDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dialogText = progressDialog.findViewById(R.id.textViewDialog);
-            dialogText.setText("loading");
+            dialogText.setText("loading Bookmark");
             progressDialog.show();
+
 
             DataBase.loadBookmarkedQues(new MyCompleteListener() {
                 @Override

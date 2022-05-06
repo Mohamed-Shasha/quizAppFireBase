@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     tools:context=".Profile">
@@ -103,7 +104,6 @@
                 android:id="@+id/profileEditName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:hint="Name"
                 android:inputType="text">
 
@@ -121,7 +121,7 @@
                 android:id="@+id/profileEditEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+
                 android:hint="Email"
                 android:inputType="textEmailAddress">
 
@@ -139,7 +139,6 @@
                 android:id="@+id/profileEditPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:hint="Phone Number"
                 android:inputType="number">
 

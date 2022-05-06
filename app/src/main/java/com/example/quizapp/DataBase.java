@@ -429,87 +429,9 @@ public class DataBase {
 
     }
 
-    public static void loadBookmarkId(MyCompleteListener myCompleteListener) {
-        g_bookmarkIdList.clear();
-
-        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
-                .collection("USER_DATA").document("BOOKMARKS")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-
-                        int count = profile.getBookmarkCount();
-
-                        for (int i = 0; i < count; i++) {
-                            String boomMarkId = documentSnapshot.getString("BM" + String.valueOf(i + 1) + "_ID");
-                            g_bookmarkIdList.add(boomMarkId);
-                        }
-
-                        myCompleteListener.onSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        myCompleteListener.onFailure();
-                    }
-                });
-
-
-    }
-
-    public static void loadBookmarkedQues(MyCompleteListener myCompleteListener) {
-
-        g_question_bookmarked.clear();
-        final int[] temp = {0};
-
-        if (g_bookmarkIdList.size() == 0) {
-            myCompleteListener.onSuccess();
-        }
 
 //        get question id to fetch info
-        for (int i = 0; i < g_bookmarkIdList.size(); i++) {
 
-            String documentID = g_bookmarkIdList.get(i);
-            db.collection("Questions").document(documentID)
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if (documentSnapshot.exists()) {
-                                g_question_bookmarked.add(new QuestionModel(
-                                        documentSnapshot.getId(),
-                                        documentSnapshot.getString("QUESTION"),
-                                        documentSnapshot.getString("A"),
-                                        documentSnapshot.getString("B"),
-                                        documentSnapshot.getString("C"),
-                                        documentSnapshot.getString("D"),
-                                        documentSnapshot.getLong("ANSWER").intValue(),
-                                        0,
-                                        -1,
-                                        false
-                                ));
-                            }
-                            temp[0]++;
-
-                            if (temp[0] == g_bookmarkIdList.size()) {
-                                myCompleteListener.onSuccess();
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            myCompleteListener.onFailure();
-                        }
-                    });
-
-        }
-
-
-    }
 
     public static void getTopUsers(MyCompleteListener myCompleteListener) {
         usersList.clear();
@@ -576,5 +498,86 @@ public class DataBase {
                 });
     }
 
+    public static void loadBookmarkId(MyCompleteListener myCompleteListener) {
+        g_bookmarkIdList.clear();
 
-}
+        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                .collection("USER_DATA").document("BOOKMARKS")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+
+                        int count = profile.getBookmarkCount();
+
+                        for (int i = 0; i < count; i++) {
+                            String boomMarkId = documentSnapshot.getString("BM" + String.valueOf(i + 1) + "_ID");
+                            g_bookmarkIdList.add(boomMarkId);
+                        }
+
+                        myCompleteListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        myCompleteListener.onFailure();
+                    }
+                });
+
+
+    }
+
+    public static void loadBookmarkedQues(MyCompleteListener myCompleteListener) {
+
+        g_question_bookmarked.clear();
+        final int[] temp = {0};
+
+        if (g_bookmarkIdList.size() == 0) {
+            myCompleteListener.onSuccess();
+
+        }
+
+            for (int i = 0; i < g_bookmarkIdList.size(); i++) {
+
+                String documentID = String.valueOf(g_bookmarkIdList.get(i));
+//                Log.d("bookmark ID",documentID);
+                db.collection("Questions").document(documentID)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.exists()) {
+                                    g_question_bookmarked.add(new QuestionModel(
+                                            documentSnapshot.getId(),
+                                            documentSnapshot.getString("QUESTION"),
+                                            documentSnapshot.getString("A"),
+                                            documentSnapshot.getString("B"),
+                                            documentSnapshot.getString("C"),
+                                            documentSnapshot.getString("D"),
+                                            documentSnapshot.getLong("ANSWER").intValue(),
+                                            0,
+                                            -1,
+                                            false
+                                    ));
+                                    temp[0]++;
+                                }
+
+
+                                if (temp[0] == g_bookmarkIdList.size()) {
+                                    myCompleteListener.onSuccess();
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                myCompleteListener.onFailure();
+                            }
+                        });
+
+            }
+        }
+
+    }
