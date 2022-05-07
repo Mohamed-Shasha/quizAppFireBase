@@ -56,9 +56,8 @@ public class DataBase {
     public static ProfileModel profile = new ProfileModel("n", null, null, 0);
     public static RankModel performance = new RankModel(0, -1, "n");
 
-
     static void createUser(String email, String name, MyCompleteListener completeListener) {
-        // Create a new user with a first and last name
+        // Create a new user with a first and last name , score , bookmarks number
         Map<String, Object> userData = new HashMap<>();
         userData.put("EMAIL_ID", email);
         userData.put("NAME", name);
@@ -91,8 +90,8 @@ public class DataBase {
                     }
                 });
     }
-//    load categories from fire_store Database
 
+// load user-profile data
     public static void getProfile(MyCompleteListener myCompleteListener) {
 //        get user by  firebase user ID
         db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
@@ -128,6 +127,7 @@ public class DataBase {
                 });
     }
 
+//     update name and phone
     public static void updateProfileDate(String name, String phone,MyCompleteListener myCompleteListener) {
 
         Map<String, Object> profileData = new ArrayMap<>();
@@ -136,8 +136,9 @@ public class DataBase {
         profileData.put("PHONE", phone);
 
 
-
+//      get current user from USERS collection
         db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+//                update user document
                 .update(profileData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -156,16 +157,22 @@ public class DataBase {
 
     }
 
+
+//    load User data
     public static void loadUserDate(MyCompleteListener myCompleteListener) {
+//        load categories
         loadCategories(new MyCompleteListener() {
             @Override
             public void onSuccess() {
+//                load profile
                 getProfile(new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
+//                        load number of users
                         getTotalUsers(new MyCompleteListener() {
                             @Override
                             public void onSuccess() {
+//                              load bookmarked question IDs
                                 loadBookmarkId(myCompleteListener);
 
                             }
@@ -193,28 +200,39 @@ public class DataBase {
 
     }
 
-
+    //    load categories from fire_store Database
     public static void loadCategories(MyCompleteListener completeListener) {
+//        clear category list
         g_cat_List.clear();
+//        get collection quiz and loop though it
         db.collection("QUIZ").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
+
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        store document lists in Map
                         Map<String, QueryDocumentSnapshot> docList = new ArrayMap<>();
+//                        loop through map values
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+//                          add each document to the list
                             docList.put(doc.getId(), doc);
                         }
+//                        get categories document
                         QueryDocumentSnapshot categoryListDoc = docList.get("Categories");
 
 
+//                        get count field of categories
                         long catCount = categoryListDoc.getLong("COUNT");
-
+//                        loop until count is 0
                         for (int i = 1; i <= catCount; i++) {
-
+//                            get Category ID string
                             String catID = categoryListDoc.getString("CAT" + String.valueOf(i) + "_ID");
+//                            here we get the category by document ID read
                             QueryDocumentSnapshot catDoc = docList.get(catID);
+//                            get category name and number of tests
                             int NumOfTest = catDoc.getLong("NUM_OF_TESTS").intValue();
                             String catName = catDoc.getString("NAME");
+//                            add our  data to static local categoryList of CategoryModel class
                             g_cat_List.add(new CategoryModel(catID, catName, NumOfTest));
                         }
                         completeListener.onSuccess();
@@ -236,20 +254,22 @@ public class DataBase {
     public static void loadTestData(MyCompleteListener myCompleteListener) {
         g_test_List.clear();
 
-//        get document quiz from user selected index
+//        get document quiz test from user selected index
         db.collection("QUIZ").document(g_cat_List.get(cat_index).getDocumentID())
                 .collection("TEST_LIST").document("TEST_INFO").get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
 
+//                      get number of test from user selected test index
                         int Num_Of_Test = g_cat_List.get(cat_index).getNumOfTests();
 
 
                         for (int i = 1; i <= Num_Of_Test; i++) {
-
+//                            get test id and test time
                             String test_ID = documentSnapshot.getString("TEST" + String.valueOf(i) + "_ID");
                             int test_time = documentSnapshot.getLong("TEST" + String.valueOf(i) + "_TIME").intValue();
+//                            add to static list the data retrieved from database
                             g_test_List.add(new TestModel(test_ID, 0, test_time));
 
 
@@ -269,20 +289,23 @@ public class DataBase {
     }
 
     public static void loadQuestions(MyCompleteListener myCompleteListener) {
+//        clear question list
         g_question_list.clear();
+
+//        get question by searching the values that connects with user selected test and selected category
         db.collection("Questions")
                 .whereEqualTo("CATEGORY", g_cat_List.get(cat_index).getDocumentID())
                 .whereEqualTo("TEST", g_test_List.get(selectedTestIndex).getTestID())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
+//                    loop through that document
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
-                            boolean isBookmarked = false;
-                            if (g_bookmarkIdList.contains(documentSnapshot.getId())) {
-                                isBookmarked = true;
-                            }
+//                       set bookmark to true if  bookmark list has question ID
+                         boolean isBookmarked = g_bookmarkIdList.contains(documentSnapshot.getId());
+
                             String question = documentSnapshot.getString("QUESTION");
                             String a = documentSnapshot.getString("A");
                             String b = documentSnapshot.getString("B");
@@ -290,7 +313,7 @@ public class DataBase {
                             String d = documentSnapshot.getString("D");
                             int answer = documentSnapshot.getLong("ANSWER").intValue();
 
-
+//                            set the question static list data from data retrieved
                             g_question_list.add(new QuestionModel(documentSnapshot.getId(),
                                     question, a, b, c, d, answer, -1, NOT_VISITED, isBookmarked));
 
@@ -315,35 +338,44 @@ public class DataBase {
 
     }
 
+//    send grade to fire_store DB
     public static void sendResult(int score, MyCompleteListener myCompleteListener) {
 
+//        allow multiple writes at the same time
         WriteBatch writeBatch = db.batch();
 
 
-//       bookmarks
+//       set bookmarks data in a Map
         Map<String, Object> bookmarkData = new ArrayMap<>();
 
+//        loop through questions bookmarked from previous list
         for (int i = 0; i < g_bookmarkIdList.size(); i++) {
             bookmarkData.put("BM" + String.valueOf(i) + "_ID", g_bookmarkIdList.get(i));
         }
 
+//        get document BOOKMARKS
         DocumentReference bookmarkDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                 .collection("USER_DATA").document("BOOKMARKS");
 
-
+//      write to this document the bookmark id with question ID
         writeBatch.set(bookmarkDocument, bookmarkData);
 
         DocumentReference userDocument = db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
-
+//       update user's number of bookmarked question
         writeBatch.update(userDocument, "BOOKMARKS", g_bookmarkIdList.size());
+
+//        if score is more that what is in the database do update score
         if (score > g_test_List.get(selectedTestIndex).getTopScore()) {
 
             DocumentReference scoreDocument = userDocument.collection("USER_DATA").document("MY_SCORE");
+
             Map<String, Object> testData = new ArrayMap<>();
+//            get score user for that particular selected test
             testData.put(g_test_List.get(selectedTestIndex).getTestID(), score);
+//            if document do not exist will be created and be set
             writeBatch.set(scoreDocument, testData, SetOptions.merge());
         }
-
+//      commit changes to fire_store DB
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -363,7 +395,7 @@ public class DataBase {
                         myCompleteListener.onFailure();
                     }
                 });
-
+//      update total score
         updateTotalScore();
     }
 
@@ -375,9 +407,10 @@ public class DataBase {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
 
+//                      loop through the size of tests
                         for (int i = 0; i < g_test_List.size(); i++) {
                             if (documentSnapshot.get(g_test_List.get(i).getTestID()) != null) {
-
+//                                get score of this document
                                 int top = documentSnapshot.getLong(g_test_List.get(i).getTestID()).intValue();
                                 g_test_List.get(i).setTopScore(top);
 
@@ -437,13 +470,12 @@ public class DataBase {
     }
 
 
-//        get question id to fetch info
 
 
     public static void getTopUsers(MyCompleteListener myCompleteListener) {
         usersList.clear();
         String uID = FirebaseAuth.getInstance().getUid();
-
+// limit users by 20
         db.collection("USERS")
                 .whereGreaterThan("TOTAL_SCORE", 0)
                 .orderBy("TOTAL_SCORE", Query.Direction.DESCENDING)
@@ -482,6 +514,7 @@ public class DataBase {
                 });
     }
 
+//    get the number of app users
     public static void getTotalUsers(MyCompleteListener myCompleteListener) {
 
         db.collection("USERS").document("TOTAL_USERS")
@@ -505,33 +538,46 @@ public class DataBase {
                 });
     }
 
+
+
     public static void loadBookmarkId(MyCompleteListener myCompleteListener) {
-        g_bookmarkIdList.clear();
 
-        db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
-                .collection("USER_DATA").document("BOOKMARKS")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+       g_bookmarkIdList.clear();
+        //                      count number of booked marked questions
+        db.collection("USERS").document(FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                int count = documentSnapshot.getLong("BOOKMARKS").intValue();
+                Log.e("count", String.valueOf(count));
+               //        user's bookmarks
+                db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                        .collection("USER_DATA").document("BOOKMARKS")
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
 
+//                                fetch question ID
+                                for (int i = 0; i < count; i++) {
+                                    Log.e("count", String.valueOf(count));
+                                    String boomMarkId = documentSnapshot.getString("BM" + String.valueOf(i) + "_ID");
+                                   g_bookmarkIdList.add(boomMarkId);
+                                   Log.e("TAG", String.valueOf(g_bookmarkIdList));
+                                    Log.e("here", String.valueOf(1));
+                                }
 
-                        int count = profile.getBookmarkCount();
+                                myCompleteListener.onSuccess();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                myCompleteListener.onFailure();
+                            }
+                        });
+            }
+        });
 
-                        for (int i = 0; i < count; i++) {
-                            String boomMarkId = documentSnapshot.getString("BM" + String.valueOf(i + 1) + "_ID");
-                            g_bookmarkIdList.add(boomMarkId);
-                        }
-
-                        myCompleteListener.onSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        myCompleteListener.onFailure();
-                    }
-                });
 
 
     }
@@ -548,14 +594,17 @@ public class DataBase {
 
             for (int i = 0; i < g_bookmarkIdList.size(); i++) {
 
+//                fetch booked marked questions IDs from static g_bookmarkIdList
                 String documentID = String.valueOf(g_bookmarkIdList.get(i));
-//                Log.d("bookmark ID",documentID);
+
+//                start fetching documents one by one
                 db.collection("Questions").document(documentID)
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 if (documentSnapshot.exists()) {
+//                                  get data from the Question and  store the question booked marked  in QuestionModel list
                                     g_question_bookmarked.add(new QuestionModel(
                                             documentSnapshot.getId(),
                                             documentSnapshot.getString("QUESTION"),
@@ -571,6 +620,7 @@ public class DataBase {
                                     temp[0]++;
                                 }
 
+//                                once we reached the end list we call its end
 
                                 if (temp[0] == g_bookmarkIdList.size()) {
                                     myCompleteListener.onSuccess();

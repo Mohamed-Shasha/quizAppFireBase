@@ -57,7 +57,7 @@ public class  LoginPage extends AppCompatActivity {
         signInGoogle = findViewById(R.id.buttonLoginGoogle);
         signUp = findViewById(R.id.textViewSignUp);
         forgotPassword = findViewById(R.id.textViewLoginForgotPassword);
-//        progressBar = findViewById(R.id.progressBarLogin);
+
 
         progressDialog = new Dialog(LoginPage.this);
         progressDialog.setContentView(R.layout.dialog_layout);
@@ -170,6 +170,7 @@ public class  LoginPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(LoginPage.this, "Google Signing in Successful", Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
@@ -178,11 +179,11 @@ public class  LoginPage extends AppCompatActivity {
                                 DataBase.createUser(user.getEmail().toString(), user.getDisplayName().toString(), new MyCompleteListener() {
                                     @Override
                                     public void onSuccess() {
-
+// load data
                                         DataBase.loadUserDate(new MyCompleteListener() {
                                             @Override
                                             public void onSuccess() {
-
+// take to main activity on success
                                                 progressDialog.dismiss();
                                                 Intent i = new Intent(LoginPage.this, MainActivity.class);
                                                 startActivity(i);
@@ -191,6 +192,7 @@ public class  LoginPage extends AppCompatActivity {
                                             }
                                             @Override
                                             public void onFailure() {
+//                                                show error loading data
                                                 progressDialog.dismiss();
                                                 Toast.makeText(LoginPage.this, "error fetch data", Toast.LENGTH_SHORT).show();
 
@@ -202,6 +204,7 @@ public class  LoginPage extends AppCompatActivity {
 
                                     @Override
                                     public void onFailure() {
+//                                        error is not new user
 
                                         progressDialog.dismiss();
                                         Toast.makeText(LoginPage.this, "user already exist", Toast.LENGTH_SHORT).show();
@@ -214,6 +217,7 @@ public class  LoginPage extends AppCompatActivity {
                                 DataBase.loadUserDate(new MyCompleteListener() {
                                     @Override
                                     public void onSuccess() {
+//                                        load test data and on success take to main activity
                                         DataBase.loadTestData(new MyCompleteListener() {
                                                     @Override
                                                     public void onSuccess() {
@@ -225,6 +229,7 @@ public class  LoginPage extends AppCompatActivity {
 
                                                     @Override
                                                     public void onFailure() {
+//                                                        show error fetching test data from database
                                                         progressDialog.dismiss();
                                                         Toast.makeText(LoginPage.this, "error fetching data", Toast.LENGTH_SHORT).show();
                                                     }
@@ -235,6 +240,7 @@ public class  LoginPage extends AppCompatActivity {
 
                                             @Override
                                             public void onFailure() {
+//                                        error loading user data
                                                 progressDialog.dismiss();
                                                 Toast.makeText(LoginPage.this, "error fetching data", Toast.LENGTH_SHORT).show();
 
@@ -261,6 +267,8 @@ public class  LoginPage extends AppCompatActivity {
     // [END auth_with_google]
 
 
+
+//     log in with email and password
     protected void signInWithFirebase(String userEmail, String userPassword) {
 
         progressDialog.show();
@@ -270,11 +278,13 @@ public class  LoginPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            // Google Sign In was successful, authenticate with Firebase
                             Toast.makeText(LoginPage.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
 
                             DataBase.loadUserDate(new MyCompleteListener() {
                                 @Override
                                 public void onSuccess() {
+//                                    load user data
                                     progressDialog.dismiss();
                                     Intent i = new Intent(LoginPage.this, MainActivity.class);
                                     startActivity(i);
@@ -283,12 +293,14 @@ public class  LoginPage extends AppCompatActivity {
 
                                 @Override
                                 public void onFailure() {
+//                                    error loading data
                                     progressDialog.dismiss();
                                     Toast.makeText(LoginPage.this, "error fetch data", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
                         } else {
+//                            error signing in in with firebase
                             Toast.makeText(LoginPage.this, "Error Signing in, please try again", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
 
@@ -298,7 +310,7 @@ public class  LoginPage extends AppCompatActivity {
 
     }
 
-
+// keep track if users is already logged in
     @Override
     protected void onStart() {
         super.onStart();

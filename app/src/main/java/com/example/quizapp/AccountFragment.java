@@ -123,14 +123,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-//                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                        .requestIdToken(getString(R.string.default_web_client_id))
-//                        .requestEmail()
-//                        .build();
-//                GoogleSignInClient gsc = GoogleSignIn.getClient(getContext(),gso);
-//                gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
+
                 GoogleSignIn.getClient(
                         getContext(),
                         new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
@@ -171,9 +164,10 @@ public class AccountFragment extends Fragment {
         int lowestTopScore = DataBase.usersList.get(DataBase.usersList.size() - 1).getTotalScore();
 //        check rank in remaining users / not in top 20
         int remaining = DataBase.usersTotal - 20;
-
+//        calculate user location in the list
         int mySlot = (DataBase.performance.getTotalScore() * remaining) / lowestTopScore;
         int rank;
+//        where not 21 rank ;get rank by subtracting user location from total
         if (lowestTopScore != DataBase.performance.getTotalScore()) {
             rank = DataBase.usersTotal - mySlot;
         } else {

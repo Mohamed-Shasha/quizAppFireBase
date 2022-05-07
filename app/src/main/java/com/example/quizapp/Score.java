@@ -42,6 +42,7 @@ public class Score extends AppCompatActivity {
         getSupportActionBar().setTitle("Result");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+//        initialize data
         progressDialog = new Dialog(Score.this);
         progressDialog.setContentView(R.layout.dialog_layout);
         progressDialog.setCancelable(false);
@@ -60,7 +61,7 @@ public class Score extends AppCompatActivity {
         reattempt = findViewById(R.id.reattempt);
 
 
-        loadData();
+        loadScoreData();
         setBookmark();
         saveResult();
         reattempt.setOnClickListener(new View.OnClickListener() {
@@ -104,22 +105,27 @@ public class Score extends AppCompatActivity {
     }
 
 
+
     private void reAttemptFunction() {
+//        reset answers and their statuses
         for (int i = 0; i < DataBase.g_question_list.size(); i++) {
             DataBase.g_question_list.get(i).setSelectedAnswer(-1);
             DataBase.g_question_list.get(i).setStatus(DataBase.NOT_VISITED);
 
         }
+//        take back to starting test page
         Intent i = new Intent(Score.this, StartTest.class);
         startActivity(i);
         finish();
     }
 
-    private void loadData() {
+    private void loadScoreData() {
         int correctQuestion = 0;
         int wrongQuestion = 0;
         int unattemptedQuestion = 0;
+//        loop through all question retrieved
         for (int i = 0; i < DataBase.g_question_list.size(); i++) {
+//            depending on status we calculate number of correct and wrong and unattempted
             if (DataBase.g_question_list.get(i).getSelectedAnswer() == -1) {
                 unattemptedQuestion++;
             } else {
@@ -130,23 +136,28 @@ public class Score extends AppCompatActivity {
                 }
             }
         }
+//         set results data fields
         correct.setText(String.valueOf(correctQuestion));
         wrong.setText(String.valueOf(wrongQuestion));
         unattempted.setText(String.valueOf(unattemptedQuestion));
         totalQuestions.setText(String.valueOf(DataBase.g_question_list.size()));
+//        calculate grade divide correct on number of question
         grade = correctQuestion * 100 / DataBase.g_question_list.size();
         score.setText(String.valueOf(grade));
         timeTakenCal = getIntent().getLongExtra("Time_Taken", 0);
-        String time = String.format("%02d: %02d minutes",
-//                        minutes
+
+//        calculate time taken
+        String time = String.format("%02d: %02d ",
+//                        get minutes
                 TimeUnit.MILLISECONDS.toMinutes(timeTakenCal),
-//                        seconds
+//                       get seconds
                 TimeUnit.MILLISECONDS.toSeconds(timeTakenCal) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeTakenCal)));
 
         timeTaken.setText(time);
     }
 
+//    pass grade to database sendResult method
     private void saveResult() {
         DataBase.sendResult(grade, new MyCompleteListener() {
             @Override
@@ -167,6 +178,7 @@ public class Score extends AppCompatActivity {
 
     }
 
+//    send back to previous item
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

@@ -87,6 +87,8 @@ public class Questions extends AppCompatActivity {
 
         question_ID.setText("1/" + String.valueOf(g_question_list.size()));
         question_cat_Name.setText(DataBase.g_cat_List.get(DataBase.cat_index).getCategoryName());
+
+//         set bookmarked or not bookmarked to imageView based on value
         if (g_question_list.get(0).isBookmarked()) {
 
             bookmarkImage.setImageResource(R.drawable.addedbookmark);
@@ -94,15 +96,16 @@ public class Questions extends AppCompatActivity {
             bookmarkImage.setImageResource(R.drawable.ic_bookmark);
         }
 
+//       get and  set the layout manager of the layout from the adapter after passing the list
         questionAdapter = new QuestionAdapter(g_question_list);
         questionView.setAdapter(questionAdapter);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         questionView.setLayoutManager(layoutManager);
 
         gridViewAdapter = new QuestionGridViewAdapter(this, g_question_list.size());
         questionsGridView.setAdapter(gridViewAdapter);
+
         setSnapHelper();
         setTimer();
 
@@ -200,6 +203,7 @@ public class Questions extends AppCompatActivity {
     }
 
 
+    // scroll right and left
     private void setSnapHelper() {
 
 
@@ -216,16 +220,19 @@ public class Questions extends AppCompatActivity {
                 questionID_Number = recyclerView.getLayoutManager().getPosition(view);
                 question_ID.setText(String.valueOf(questionID_Number + 1) + "/" + g_question_list.size());
 
+//                set status
                 if (g_question_list.get(questionID_Number).getStatus() == NOT_VISITED) {
                     g_question_list.get(questionID_Number).setStatus(UNANSWERED);
                 }
+
+//               set flag image
                 if (g_question_list.get(questionID_Number).getStatus() == REVIEW) {
                     flag_image.setVisibility(View.VISIBLE);
                 } else {
                     flag_image.setVisibility(View.GONE);
                 }
 
-
+//                 bookmarking
                 if (g_question_list.get(questionID_Number).isBookmarked()) {
 
                     bookmarkImage.setImageResource(R.drawable.addedbookmark);
@@ -245,12 +252,14 @@ public class Questions extends AppCompatActivity {
     }
 
     private void showDialog() {
-
+//      build dialog to allow with confirm and cancel functionality
         AlertDialog.Builder builder = new AlertDialog.Builder(Questions.this);
         View view = LayoutInflater.from(Questions.this)
                 .inflate(R.layout.submit_test, findViewById(R.id.layout_dialog_container_submit));
         builder.setView(view);
+
         final AlertDialog dialog = builder.create();
+//        set clickListener to cancel  button
         view.findViewById(R.id.cancel_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -258,17 +267,21 @@ public class Questions extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+        //        set clickListener to confirm  button
         view.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+//                stop counting time
                 countDownTimer.cancel();
                 dialog.dismiss();
 
+//                load score page
                 Intent i = new Intent(Questions.this, Score.class);
                 long totalTime = (long) g_test_List.get(selectedTestIndex).getTime() * 60 * 1000;
+//                store time taken so we can get it in the score page
                 i.putExtra("Time_Taken", totalTime - timeTaken);
                 startActivity(i);
+//                shutdown activity
                 Questions.this.finish();
 
             }
@@ -277,6 +290,7 @@ public class Questions extends AppCompatActivity {
     }
 
 
+    //    send to question based on number
     public void sendToQuestion(int pos) {
         questionView.smoothScrollToPosition(pos);
         if (drawer.isDrawerOpen(GravityCompat.END)) {
@@ -284,9 +298,11 @@ public class Questions extends AppCompatActivity {
         }
     }
 
+    //    timer
     private void setTimer() {
 
         long testTime = (long) g_test_List.get(selectedTestIndex).getTime() * 60 * 1000;
+//        count by second
         countDownTimer = new CountDownTimer(testTime, 1000) {
             @Override
             public void onTick(long remainingTime) {
@@ -302,15 +318,19 @@ public class Questions extends AppCompatActivity {
 
             }
 
+            // time taken after timer has finished
             @Override
             public void onFinish() {
+                long totalTime = (long) g_test_List.get(selectedTestIndex).getTime() * 60 * 1000;
                 Intent i = new Intent(Questions.this, Score.class);
                 startActivity(i);
+                i.putExtra("Time_Taken", totalTime);
                 Questions.this.finish();
 
             }
         };
 
+//        start counting
         countDownTimer.start();
     }
 

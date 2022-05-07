@@ -36,12 +36,15 @@ public class SignUpPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        initialize fields
         setContentView(R.layout.activity_sgin_up_page);
         email = findViewById(R.id.editTextSignUPEmailAddress);
         password = findViewById(R.id.editTextSignUpPassword);
         name = findViewById(R.id.editTextTextPersonName);
         signup = findViewById(R.id.buttonSignUp);
 
+//        progress dialog added
         progressDialog = new Dialog(SignUpPage.this);
         progressDialog.setContentView(R.layout.dialog_layout);
         progressDialog.setCancelable(false);
@@ -55,11 +58,13 @@ public class SignUpPage extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                signup.setClickable(false);
+
+//                get user's password and email from text fields
                 String userEmail = email.getText().toString().trim();
                 String userPassword = password.getText().toString().trim();
 
                 if (vaildateDate()) {
+//                    when data validated call firebase sign up function
                     signUpFireBase(userEmail, userPassword);
                 }
 
@@ -67,6 +72,7 @@ public class SignUpPage extends AppCompatActivity {
         });
     }
 
+//    data inputted validation
     private boolean vaildateDate() {
         boolean status = false;
         if (email.getText().toString().isEmpty()) {
@@ -88,22 +94,29 @@ public class SignUpPage extends AppCompatActivity {
         return true;
     }
 
+//    normal Sign up with email and password to firebase
     public void signUpFireBase(String userEmail, String userPassword) {
 
         progressDialog.show();
         String userName = name.getText().toString().trim();
+
+        // [START create_user_with_email]
         firebaseAuth.createUserWithEmailAndPassword(userEmail, userPassword)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(SignUpPage.this, "Account has been created", Toast.LENGTH_LONG).show();
+//                            create a new user in fireStore database
                             DataBase.createUser(userEmail, userName, new MyCompleteListener() {
                                 @Override
                                 public void onSuccess() {
+//                                    load user data
                                     DataBase.loadUserDate(new MyCompleteListener() {
                                         @Override
                                         public void onSuccess() {
+//                                            loading data success open main activity
                                             progressDialog.dismiss();
                                             Intent i = new Intent(SignUpPage.this, MainActivity.class);
                                             startActivity(i);
@@ -112,6 +125,7 @@ public class SignUpPage extends AppCompatActivity {
 
                                         @Override
                                         public void onFailure() {
+//                                            error loading user data
                                             progressDialog.dismiss();
                                             Toast.makeText(SignUpPage.this, "Error Fetching Data", Toast.LENGTH_LONG).show();
 
@@ -122,12 +136,14 @@ public class SignUpPage extends AppCompatActivity {
 
                                 @Override
                                 public void onFailure() {
+//                                    error creating new user
                                     progressDialog.dismiss();
                                     Toast.makeText(SignUpPage.this, "Error, try again later", Toast.LENGTH_LONG).show();
 
                                 }
                             });
                         } else {
+//                            error firebase sign in
                             progressDialog.dismiss();
                             Toast.makeText(SignUpPage.this, "Error please try again later", Toast.LENGTH_LONG).show();
 

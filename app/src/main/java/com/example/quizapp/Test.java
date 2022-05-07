@@ -22,6 +22,7 @@ public class Test extends AppCompatActivity {
     private TestAdapter adapter;
     private Dialog progressDialog;
     private TextView dialogText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +34,9 @@ public class Test extends AppCompatActivity {
 
         getSupportActionBar().setTitle(DataBase.g_cat_List.get(DataBase.cat_index).getCategoryName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+// initialize fields
         testView = findViewById(R.id.test_recycler_view);
+
         progressDialog = new Dialog(Test.this);
         progressDialog.setContentView(R.layout.dialog_layout);
         progressDialog.setCancelable(false);
@@ -44,15 +46,16 @@ public class Test extends AppCompatActivity {
 
         progressDialog.show();
 
-
+//       get and  set the layout manager of the layout from the adapter
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         testView.setLayoutManager(layoutManager);
 
-
+//       load test data from fire_store database from class database
         DataBase.loadTestData(new MyCompleteListener() {
             @Override
             public void onSuccess() {
+//                after test data loaded load score
                 DataBase.loadScore(new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
@@ -63,7 +66,7 @@ public class Test extends AppCompatActivity {
 
                     @Override
                     public void onFailure() {
-
+//error message on score
                         Toast.makeText(Test.this, "error load score data", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
@@ -73,7 +76,7 @@ public class Test extends AppCompatActivity {
 
             @Override
             public void onFailure() {
-
+// error message on loading test data
                 Toast.makeText(Test.this, "error fetch data", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
@@ -81,7 +84,7 @@ public class Test extends AppCompatActivity {
 
     }
 
-
+    // let user go back to the item came from
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

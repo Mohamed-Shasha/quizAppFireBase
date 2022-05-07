@@ -20,7 +20,7 @@ import java.util.List;
 public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
     private List<TestModel> testList;
-
+    // data is passed into the constructor
     public TestAdapter(List<TestModel> testModelList) {
         this.testList = testModelList;
     }
@@ -29,12 +29,15 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
     @Override
     public TestAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
+//        inflate layout from test_item_layout layout
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.test_item_layout, parent, false);
         return new ViewHolder(view);
     }
 
+    // binds the data to each test item
     @Override
     public void onBindViewHolder(@NonNull TestAdapter.ViewHolder holder,final int position) {
+
         int progress = testList.get(position).getTopScore();
 
         holder.setData(position,progress);
@@ -45,6 +48,8 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
         return testList.size();
     }
 
+
+    // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView testNumber;

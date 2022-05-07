@@ -36,10 +36,13 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     @NonNull
     @Override
     public QuestionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //        inflate layout from question_item layout
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_item, parent, false);
 
         return new ViewHolder(view);
     }
+    // binds the data to each question item
 
     @Override
     public void onBindViewHolder(@NonNull QuestionAdapter.ViewHolder holder, int position) {
@@ -52,6 +55,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         return questionModelList.size();
     }
 
+
+    // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 

@@ -36,7 +36,9 @@ public class IntroScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+//                logged in
                 if (mAuth.getCurrentUser() != null) {
+//                    load data
                     DataBase.loadUserDate( new MyCompleteListener() {
                         @Override
                         public void onSuccess() {
@@ -52,6 +54,7 @@ public class IntroScreen extends AppCompatActivity {
                     });
 
                 } else {
+//                    not logged in take to log in page
                     Intent i = new Intent(IntroScreen.this, LoginPage.class);
                     startActivity(i);
                     IntroScreen.this.finish();

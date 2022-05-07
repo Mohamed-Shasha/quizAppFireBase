@@ -32,11 +32,10 @@ public class Answers extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Answers");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+//       get and  set the layout manager of the layout from the adapter
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         answersView.setLayoutManager(layoutManager);
-
         AnswersAdapter adapter = new AnswersAdapter(DataBase.g_question_list);
         answersView.setAdapter(adapter);
 

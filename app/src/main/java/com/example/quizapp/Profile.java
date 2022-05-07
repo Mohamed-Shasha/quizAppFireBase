@@ -54,6 +54,7 @@ public class Profile extends AppCompatActivity {
         saveEdit = findViewById(R.id.save_profile_button);
         cancelEdit = findViewById(R.id.cancel_profile_button);
 
+
         editingDisabled();
 
 
@@ -108,7 +109,7 @@ public class Profile extends AppCompatActivity {
 
         nameInserted =editName.getText().toString();
         phoneInserted =editPhone.getText().toString();
-        emailInserted =editEmail.getText().toString();
+
         if (nameInserted.isEmpty()){
             editName.setError("Name cannot be empty");
             return false;

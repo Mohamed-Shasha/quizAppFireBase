@@ -27,11 +27,12 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.ViewHolder> {
     @NonNull
     @Override
     public RankAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+//        inflate layout from rank_item_layout layout
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rank_item_layout, parent, false);
 
         return new ViewHolder(view);
     }
+    // binds the data to each rank item
 
     @Override
     public void onBindViewHolder(@NonNull RankAdapter.ViewHolder holder, int position) {
@@ -47,6 +48,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.ViewHolder> {
 
         return userModelList.size();
     }
+    // stores and recycles views as they are scrolled off screen
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

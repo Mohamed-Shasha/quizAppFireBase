@@ -26,9 +26,12 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
     @Override
     public BookmarksAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
+        //        inflate layout from answer_item_layout layout
+
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.answer_item_layout, parent, false);
         return new BookmarksAdapter.ViewHolder(view);
     }
+    // binds the data to each booked marked item
 
     @Override
     public void onBindViewHolder(@NonNull BookmarksAdapter.ViewHolder holder, int position) {
@@ -48,6 +51,8 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.View
         return questionList.size();
     }
 
+
+    // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView questionNumber, questionView, optionA, optionB, optionC, optionD, result;

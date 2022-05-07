@@ -26,9 +26,12 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
     @Override
     public AnswersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
+        //        inflate layout from answer_item_layout layout
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.answer_item_layout, parent, false);
         return new AnswersAdapter.ViewHolder(view);
     }
+
+    // binds the data to each answer item
 
     @Override
     public void onBindViewHolder(@NonNull AnswersAdapter.ViewHolder holder, int position) {
@@ -47,6 +50,8 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
     public int getItemCount() {
         return questionList.size();
     }
+
+    // stores and recycles views as they are scrolled off screen
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

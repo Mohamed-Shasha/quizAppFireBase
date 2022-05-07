@@ -46,6 +46,8 @@ public class QuestionGridViewAdapter extends BaseAdapter {
 
         View myView;
         if (view == null) {
+            //        inflate layout from qustion_grid_view_item layout
+
             myView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.qustion_grid_view_item, viewGroup, false);
         } else {
             myView = view;
@@ -60,6 +62,7 @@ public class QuestionGridViewAdapter extends BaseAdapter {
                 }
             }
         });
+//        set question number
         TextView quesTV = myView.findViewById(R.id.ques_number);
         quesTV.setText(String.valueOf(i + 1));
 

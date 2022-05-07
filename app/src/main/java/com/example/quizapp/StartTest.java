@@ -35,7 +35,7 @@ public class StartTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_test);
 
-
+// initialize fields
         st_cat_name = findViewById(R.id.st_category_name);
         st_test_number = findViewById(R.id.st_test_number);
         st_total_questions = findViewById(R.id.st_total_questions);
@@ -44,13 +44,14 @@ public class StartTest extends AppCompatActivity {
         startTestButton = findViewById(R.id.start_test);
         backButton = findViewById(R.id.st_back_button);
 
+//        add clickListener
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-
+//        add clickListener
         startTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +68,7 @@ public class StartTest extends AppCompatActivity {
         dialogText.setText("Questions loading");
         progressDialog.show();
 
-
+// loading questions from database and on success set fields
         loadQuestions(new MyCompleteListener() {
             @Override
             public void onSuccess() {
@@ -78,6 +79,7 @@ public class StartTest extends AppCompatActivity {
             @Override
             public void onFailure() {
                 progressDialog.dismiss();
+//                show error message
                 Toast.makeText(StartTest.this, "Error Fetching Data", Toast.LENGTH_LONG).show();
 
             }
@@ -88,7 +90,7 @@ public class StartTest extends AppCompatActivity {
     }
 
 
-// set the Test Data Page from Model
+// set the Test Data Page from Model with the filed lists from database fetched info
     private void setDate() {
         st_cat_name.setText(g_cat_List.get(cat_index).getCategoryName());
         st_test_number.setText("Test Number" + String.valueOf(selectedTestIndex+1));
