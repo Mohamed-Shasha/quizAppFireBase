@@ -64,33 +64,7 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/profileView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
 
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_account" />
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="profile"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
     </LinearLayout>
 
@@ -185,6 +159,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="100dp"
             android:padding="10dp"
+
             android:elevation="5dp"
             android:orientation="horizontal">
 
@@ -194,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
 
-
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
 
@@ -211,6 +186,33 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="logout"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/profileView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_account" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="profile"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp"
