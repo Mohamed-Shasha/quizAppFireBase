@@ -286,7 +286,7 @@ public class  LoginPage extends AppCompatActivity {
                                 public void onSuccess() {
 //                                    load user data
                                     progressDialog.dismiss();
-                                    Intent i = new Intent(LoginPage.this, MainActivity.class);
+                                    Intent i = new Intent(LoginPage.this, ClassCode.class);
                                     startActivity(i);
                                     finish();
                                 }
