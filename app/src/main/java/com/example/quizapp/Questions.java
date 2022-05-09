@@ -284,6 +284,7 @@ public class Questions extends AppCompatActivity {
 //                shutdown activity
                 Questions.this.finish();
 
+
             }
         });
         dialog.show();

@@ -254,7 +254,7 @@ public class DataBase {
     public static void loadTestData(MyCompleteListener myCompleteListener) {
         g_test_List.clear();
 
-//        get document quiz test from user selected index
+//        get document quiz test data
         db.collection("QUIZ").document(g_cat_List.get(cat_index).getDocumentID())
                 .collection("TEST_LIST").document("TEST_INFO").get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -372,7 +372,7 @@ public class DataBase {
             Map<String, Object> testData = new ArrayMap<>();
 //            get score user for that particular selected test
             testData.put(g_test_List.get(selectedTestIndex).getTestID(), score);
-//            if document do not exist will be created and be set
+//            if document do not exist will be created and  set
             writeBatch.set(scoreDocument, testData, SetOptions.merge());
         }
 //      commit changes to fire_store DB

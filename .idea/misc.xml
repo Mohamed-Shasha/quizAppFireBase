@@ -36,6 +36,8 @@
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable/side_nav_bar.xml" value="0.1425" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/drawable/unselected_button.xml" value="0.1" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout-v28/cat_item_layout.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_answers.xml" value="0.14730463852904305" />
+        <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_bookmark.xml" value="0.12452987881320518" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_forgot_password.xml" value="0.32653985507246375" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_login_page.xml" value="0.67" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -65,6 +67,7 @@
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/menu/activity_main_drawer.xml" value="0.38051282051282054" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/menu/bottom_menu.xml" value="0.19635416666666666" />
         <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/menu/main.xml" value="0.22" />
+        <entry key="..\:/Users/Msn/Downloads/quizApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1115" />
       </map>
     </option>
   </component>
