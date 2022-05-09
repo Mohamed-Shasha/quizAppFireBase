@@ -1,7 +1,9 @@
 package com.example.quizapp;
 
+import android.content.Context;
 import android.util.ArrayMap;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -10,14 +12,9 @@ import com.example.quizapp.Model.CategoryModel;
 import com.example.quizapp.Model.ProfileModel;
 import com.example.quizapp.Model.QuestionModel;
 import com.example.quizapp.Model.TestModel;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -53,7 +50,7 @@ public class DataBase {
     public static final int UNANSWERED = 1;
     public static final int ANSWERED = 2;
     public static final int REVIEW = 3;
-    public static ProfileModel profile = new ProfileModel("n", null, null, 0);
+    public static ProfileModel profile = new ProfileModel("n", null, null, "n", 0);
     public static RankModel performance = new RankModel(0, -1, "n");
 
     static void createUser(String email, String name, MyCompleteListener completeListener) {
@@ -91,7 +88,7 @@ public class DataBase {
                 });
     }
 
-// load user-profile data
+    // load user-profile data
     public static void getProfile(MyCompleteListener myCompleteListener) {
 //        get user by  firebase user ID
         db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
@@ -102,6 +99,7 @@ public class DataBase {
 
                         profile.setName(documentSnapshot.getString("NAME"));
                         profile.setEmail(documentSnapshot.getString("EMAIL_ID"));
+                        profile.setClassCode(documentSnapshot.getString("CLASS_CODE"));
 
 
                         if (documentSnapshot.getString("PHONE") != null) {
@@ -127,8 +125,8 @@ public class DataBase {
                 });
     }
 
-//     update name and phone
-    public static void updateProfileDate(String name, String phone,MyCompleteListener myCompleteListener) {
+    //     update name and phone
+    public static void updateProfileDate(String name, String phone, MyCompleteListener myCompleteListener) {
 
         Map<String, Object> profileData = new ArrayMap<>();
 
@@ -157,8 +155,56 @@ public class DataBase {
 
     }
 
+    public static void updateClassCode(Context context,String classCode, MyCompleteListener myCompleteListener) {
 
-//    load User data
+
+        db.collection("CLASS").document("Code").get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String classCodeDatabase = documentSnapshot.getString("CLASS_CODE");
+                        if (classCode.equals(classCodeDatabase)) {
+                            Map<String, Object> classData = new ArrayMap<>();
+                            classData.put("CLASS_CODE", classCode);
+                            db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+//                update user document
+
+                                    .set(classData, SetOptions.merge())
+
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            profile.setClassCode(classCode);
+                                            myCompleteListener.onSuccess();
+                                        }
+                                    })
+
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            myCompleteListener.onFailure();
+                                        }
+                                    });
+
+                        }
+                        else {
+                            showToast(context,"Error class code");
+                        }
+
+                    }
+
+
+                });
+
+    }
+
+    public static void showToast(Context mContext, String message){
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+    }
+//      get current user from USERS collection
+
+
+    //    load User data
     public static void loadUserDate(MyCompleteListener myCompleteListener) {
 //        load categories
         loadCategories(new MyCompleteListener() {
@@ -169,6 +215,7 @@ public class DataBase {
                     @Override
                     public void onSuccess() {
 //                        load number of users
+
                         getTotalUsers(new MyCompleteListener() {
                             @Override
                             public void onSuccess() {
@@ -304,7 +351,7 @@ public class DataBase {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
 //                       set bookmark to true if  bookmark list has question ID
-                         boolean isBookmarked = g_bookmarkIdList.contains(documentSnapshot.getId());
+                            boolean isBookmarked = g_bookmarkIdList.contains(documentSnapshot.getId());
 
                             String question = documentSnapshot.getString("QUESTION");
                             String a = documentSnapshot.getString("A");
@@ -338,7 +385,7 @@ public class DataBase {
 
     }
 
-//    send grade to fire_store DB
+    //    send grade to fire_store DB
     public static void sendResult(int score, MyCompleteListener myCompleteListener) {
 
 //        allow multiple writes at the same time
@@ -470,8 +517,6 @@ public class DataBase {
     }
 
 
-
-
     public static void getTopUsers(MyCompleteListener myCompleteListener) {
         usersList.clear();
         String uID = FirebaseAuth.getInstance().getUid();
@@ -514,7 +559,7 @@ public class DataBase {
                 });
     }
 
-//    get the number of app users
+    //    get the number of app users
     public static void getTotalUsers(MyCompleteListener myCompleteListener) {
 
         db.collection("USERS").document("TOTAL_USERS")
@@ -539,17 +584,16 @@ public class DataBase {
     }
 
 
-
     public static void loadBookmarkId(MyCompleteListener myCompleteListener) {
 
-       g_bookmarkIdList.clear();
+        g_bookmarkIdList.clear();
         //                      count number of booked marked questions
         db.collection("USERS").document(FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 int count = documentSnapshot.getLong("BOOKMARKS").intValue();
                 Log.e("count", String.valueOf(count));
-               //        user's bookmarks
+                //        user's bookmarks
                 db.collection("USERS").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                         .collection("USER_DATA").document("BOOKMARKS")
                         .get()
@@ -561,8 +605,8 @@ public class DataBase {
                                 for (int i = 0; i < count; i++) {
                                     Log.e("count", String.valueOf(count));
                                     String boomMarkId = documentSnapshot.getString("BM" + String.valueOf(i) + "_ID");
-                                   g_bookmarkIdList.add(boomMarkId);
-                                   Log.e("TAG", String.valueOf(g_bookmarkIdList));
+                                    g_bookmarkIdList.add(boomMarkId);
+                                    Log.e("TAG", String.valueOf(g_bookmarkIdList));
                                     Log.e("here", String.valueOf(1));
                                 }
 
@@ -579,7 +623,6 @@ public class DataBase {
         });
 
 
-
     }
 
     public static void loadBookmarkedQues(MyCompleteListener myCompleteListener) {
@@ -592,49 +635,49 @@ public class DataBase {
 
         }
 
-            for (int i = 0; i < g_bookmarkIdList.size(); i++) {
+        for (int i = 0; i < g_bookmarkIdList.size(); i++) {
 
 //                fetch booked marked questions IDs from static g_bookmarkIdList
-                String documentID = String.valueOf(g_bookmarkIdList.get(i));
+            String documentID = String.valueOf(g_bookmarkIdList.get(i));
 
 //                start fetching documents one by one
-                db.collection("Questions").document(documentID)
-                        .get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists()) {
+            db.collection("Questions").document(documentID)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
 //                                  get data from the Question and  store the question booked marked  in QuestionModel list
-                                    g_question_bookmarked.add(new QuestionModel(
-                                            documentSnapshot.getId(),
-                                            documentSnapshot.getString("QUESTION"),
-                                            documentSnapshot.getString("A"),
-                                            documentSnapshot.getString("B"),
-                                            documentSnapshot.getString("C"),
-                                            documentSnapshot.getString("D"),
-                                            documentSnapshot.getLong("ANSWER").intValue(),
-                                            0,
-                                            -1,
-                                            false
-                                    ));
-                                    temp[0]++;
-                                }
+                                g_question_bookmarked.add(new QuestionModel(
+                                        documentSnapshot.getId(),
+                                        documentSnapshot.getString("QUESTION"),
+                                        documentSnapshot.getString("A"),
+                                        documentSnapshot.getString("B"),
+                                        documentSnapshot.getString("C"),
+                                        documentSnapshot.getString("D"),
+                                        documentSnapshot.getLong("ANSWER").intValue(),
+                                        0,
+                                        -1,
+                                        false
+                                ));
+                                temp[0]++;
+                            }
 
 //                                once we reached the end list we call its end
 
-                                if (temp[0] == g_bookmarkIdList.size()) {
-                                    myCompleteListener.onSuccess();
-                                }
+                            if (temp[0] == g_bookmarkIdList.size()) {
+                                myCompleteListener.onSuccess();
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                myCompleteListener.onFailure();
-                            }
-                        });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            myCompleteListener.onFailure();
+                        }
+                    });
 
-            }
         }
-
     }
+
+}

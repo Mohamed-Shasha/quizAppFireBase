@@ -37,7 +37,7 @@ import java.util.Objects;
 public class AccountFragment extends Fragment {
 
     private LinearLayout logoutButton, profile, savedAnswers;
-    private TextView name, score, rank, initial;
+    private TextView name, score, rank, initial, classCode;
 
     private Dialog progressDialog;
     private TextView dialogText;
@@ -75,6 +75,7 @@ public class AccountFragment extends Fragment {
         name = view.findViewById(R.id.nameView);
         score = view.findViewById(R.id.totalscoreView);
         rank = view.findViewById(R.id.rankView);
+        classCode = view.findViewById(R.id.classView);
         initial = view.findViewById(R.id.intialView);
 //
         String userName = DataBase.profile.getName();
@@ -96,6 +97,7 @@ public class AccountFragment extends Fragment {
                         }
                         score.setText(""+DataBase.performance.getTotalScore());
                         rank.setText(""+DataBase.performance.getRank());
+                        classCode.setText("Class Code:"+DataBase.profile.getClassCode());
                     }
                     progressDialog.dismiss();
                 }
@@ -116,6 +118,7 @@ public class AccountFragment extends Fragment {
             progressDialog.dismiss();
             score.setText(""+DataBase.performance.getTotalScore());
             rank.setText(""+DataBase.performance.getRank());
+            classCode.setText("Class Code:"+DataBase.profile.getClassCode());
         }
 
 

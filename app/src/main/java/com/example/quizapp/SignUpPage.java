@@ -30,13 +30,13 @@ public class SignUpPage extends AppCompatActivity {
     private Dialog progressDialog;
     private TextView dialogText;
 
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseAuth firebaseAuth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        firebaseAuth= FirebaseAuth.getInstance();
 //        initialize fields
         setContentView(R.layout.activity_sgin_up_page);
         email = findViewById(R.id.editTextSignUPEmailAddress);

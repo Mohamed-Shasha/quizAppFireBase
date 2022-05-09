@@ -185,7 +185,7 @@ public class  LoginPage extends AppCompatActivity {
                                             public void onSuccess() {
 // take to main activity on success
                                                 progressDialog.dismiss();
-                                                Intent i = new Intent(LoginPage.this, MainActivity.class);
+                                                Intent i = new Intent(LoginPage.this, ClassCode.class);
                                                 startActivity(i);
                                                 finish();
 
@@ -222,7 +222,7 @@ public class  LoginPage extends AppCompatActivity {
                                                     @Override
                                                     public void onSuccess() {
                                                         progressDialog.dismiss();
-                                                        Intent i = new Intent(LoginPage.this, MainActivity.class);
+                                                        Intent i = new Intent(LoginPage.this, ClassCode.class);
                                                         startActivity(i);
                                                         finish();
                                                     }

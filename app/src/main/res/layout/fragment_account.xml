@@ -27,8 +27,6 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-
                 app:cardCornerRadius="45dp">
 
                 <ImageView
@@ -53,17 +51,32 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/nameView"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Name"
-            android:textAlignment="center"
-            android:textColor="#100202"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/nameView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Name"
+                android:textAlignment="center"
+                android:textColor="#100202"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/classView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="class code"
+                android:textAlignment="center"
+                android:textColor="#100202"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
 
     </LinearLayout>
