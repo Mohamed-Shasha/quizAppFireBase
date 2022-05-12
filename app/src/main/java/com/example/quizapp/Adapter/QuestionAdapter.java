@@ -15,6 +15,7 @@ import com.example.quizapp.Model.QuestionModel;
 import com.example.quizapp.R;
 
 import java.util.List;
+import java.util.Locale;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
 
@@ -85,10 +86,10 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
 
             question.setText(questionModelList.get(pos).getQuestion());
-            optionA.setText(questionModelList.get(pos).getOptionA());
-            optionB.setText(questionModelList.get(pos).getOptionB());
-            optionC.setText(questionModelList.get(pos).getOptionC());
-            optionD.setText(questionModelList.get(pos).getOptionD());
+            optionA.setText(questionModelList.get(pos).getOptionA().toLowerCase(Locale.ROOT));
+            optionB.setText(questionModelList.get(pos).getOptionB().toLowerCase(Locale.ROOT));
+            optionC.setText(questionModelList.get(pos).getOptionC().toLowerCase(Locale.ROOT));
+            optionD.setText(questionModelList.get(pos).getOptionD().toLowerCase(Locale.ROOT));
 
             setOption(optionA,1,pos);
             setOption(optionB,2,pos);

@@ -35,6 +35,7 @@
         android:layout_margin="8dp"
         android:background="@drawable/unselected_button"
         android:text="option A"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
@@ -43,11 +44,12 @@
         android:id="@+id/question_item_optionB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:layout_gravity="center"
+        android:layout_margin="8dp"
         android:background="@drawable/unselected_button"
         android:backgroundTint="@null"
         android:text="option A"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
@@ -55,10 +57,11 @@
         android:id="@+id/question_item_optionC"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:layout_gravity="center"
+        android:layout_margin="8dp"
         android:background="@drawable/unselected_button"
         android:text="option A"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
@@ -66,11 +69,12 @@
         android:id="@+id/question_item_optionD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:layout_gravity="center"
+        android:layout_margin="8dp"
         android:background="@drawable/unselected_button"
         android:backgroundTint="@null"
         android:text="option A"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="14sp" />
 

@@ -28,6 +28,7 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -562,8 +563,11 @@ public class DataBase {
     //    get the number of app users
     public static void getTotalUsers(MyCompleteListener myCompleteListener) {
 
-        db.collection("USERS").document("TOTAL_USERS")
+        db.collection("USERS")
+                .document("TOTAL_USERS")
                 .get()
+
+
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {

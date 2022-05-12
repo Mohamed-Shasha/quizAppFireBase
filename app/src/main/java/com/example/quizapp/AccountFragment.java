@@ -60,7 +60,8 @@ public class AccountFragment extends Fragment {
 //
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("My Account");
 
-
+String s = " ";
+s.toUpperCase();
         progressDialog = new Dialog(getContext());
         progressDialog.setContentView(R.layout.dialog_layout);
         progressDialog.setCancelable(false);
